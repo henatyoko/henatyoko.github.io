@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLドラマ図鑑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14162B;
+    --bg-deep:#0D0E1F;
+    --surface:#242850;
+    --surface-hi:#2E3260;
+    --line:rgba(245,241,232,0.16);
+    --accent:#FFA87A;
+    --accent-dim:rgba(255,168,122,0.20);
+    --gold:#FFD166;
+    --text:#FFFFFF;
+    --text-dim:#D6D6F0;
+    --text-faint:#ADADD6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{background-color:var(--bg);}
+  body{
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(1100px 520px at 12% -10%, rgba(255,168,122,0.14), transparent 60%),
+      radial-gradient(900px 480px at 100% 0%, rgba(173,173,214,0.10), transparent 55%);
+    background-repeat:no-repeat;
+    color:var(--text);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:48px 20px 80px;}
+
+  /* ---------- HERO ---------- */
+  .hero{margin-bottom:36px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 14px;
+  }
+  h1{
+    font-family:'Shippori Mincho',serif;
+    font-weight:800;
+    font-size:clamp(34px,6vw,54px);
+    line-height:1.25;
+    margin:0 0 14px;
+    letter-spacing:.02em;
+  }
+  h1 span{color:var(--accent);}
+  .lede{
+    color:var(--text-dim);
+    font-size:15.5px;
+    line-height:1.9;
+    max-width:56ch;
+    margin:0 0 26px;
+  }
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .stat{
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:8px 16px;
+    font-size:13px;
+    color:var(--text-dim);
+    font-family:'JetBrains Mono',monospace;
+    background:rgba(255,255,255,0.02);
+  }
+  .stat b{color:var(--text);font-weight:600;}
+
+  /* ---------- TONIGHT'S PICK ---------- */
+  .pick{
+    margin:30px 0 40px;
+    border:1px solid rgba(255,139,94,0.35);
+    background:linear-gradient(135deg, rgba(255,139,94,0.14), rgba(255,209,102,0.05));
+    border-radius:18px;
+    padding:22px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .pick-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 8px;
+  }
+  .pick-title{
+    font-family:'Shippori Mincho',serif;
+    font-weight:700;
+    font-size:22px;
+    margin:0 0 4px;
+  }
+  .pick-meta{color:var(--text-dim);font-size:13px;}
+  .pick-stars{color:var(--gold);letter-spacing:2px;font-size:15px;}
+  .shuffle-btn{
+    background:var(--accent);
+    color:#1A1230;
+    border:none;
+    border-radius:100px;
+    padding:12px 22px;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .shuffle-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(255,139,94,0.35);}
+  .shuffle-btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+  /* ---------- CONTROLS ---------- */
+  .controls{
+    position:sticky;top:0;
+    background:linear-gradient(var(--bg) 82%, transparent);
+    padding:14px 0 18px;
+    z-index:5;
+  }
+  .search-box{
+    display:flex;align-items:center;gap:10px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 16px;
+    margin-bottom:14px;
+  }
+  .search-box svg{flex:none;opacity:.6;}
+  .search-box input{
+    background:transparent;border:none;outline:none;
+    color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:15px;width:100%;
+  }
+  .search-box input::placeholder{color:var(--text-faint);}
+
+  .stamps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .stamp{
+    position:relative;
+    border:1.5px dashed rgba(245,241,232,0.28);
+    border-radius:999px;
+    padding:7px 14px 7px 12px;
+    font-size:12.5px;
+    color:var(--text-dim);
+    background:transparent;
+    cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    font-family:'JetBrains Mono',monospace;
+    transition:all .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .stamp .n{opacity:.65;}
+  .stamp:hover{border-color:rgba(255,139,94,0.5);color:var(--text);}
+  .stamp.active{
+    border-style:solid;
+    border-color:var(--accent);
+    color:var(--accent);
+    background:var(--accent-dim);
+    transform:rotate(-2deg);
+  }
+  .stamp:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  .filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:4px;}
+  .chip{
+    border:1px solid var(--line);
+    background:var(--surface);
+    color:var(--text-dim);
+    border-radius:8px;
+    padding:6px 12px;
+    font-size:12.5px;
+    cursor:pointer;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    transition:all .15s ease;
+  }
+  .chip:hover{border-color:rgba(255,255,255,0.25);color:var(--text);}
+  .chip.active{background:var(--surface-hi);border-color:var(--gold);color:var(--gold);}
+  .chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .result-count{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--text-faint);
+  }
+
+  /* ---------- LIST ---------- */
+  .list{margin-top:18px;border-top:1px solid var(--line);}
+  .row{
+    display:grid;
+    grid-template-columns:1fr auto auto;
+    gap:14px;
+    align-items:center;
+    padding:14px 6px;
+    border-bottom:1px solid var(--line);
+    transition:background .12s ease;
+  }
+  .row:hover{background:rgba(255,255,255,0.02);}
+  .row-main{min-width:0;}
+  .row-title{
+    font-size:15.5px;
+    font-weight:500;
+    color:var(--text);
+    overflow-wrap:anywhere;
+  }
+  .row-tags{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap;}
+  .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:5px;
+    color:var(--text-dim);
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--line);
+  }
+  .tag.country{color:#FFC7A6;border-color:rgba(255,168,122,0.45);background:rgba(255,168,122,0.14);}
+  .tag.watching{color:#B7EAC2;border-color:rgba(143,211,160,0.45);background:rgba(143,211,160,0.14);}
+  .tag.movie{color:var(--text-dim);}
+  .row-synopsis{
+    margin-top:7px;
+    font-size:13px;
+    line-height:1.65;
+    color:var(--text-dim);
+    max-width:60ch;
+  }
+  .row-stars{
+    color:var(--gold);
+    letter-spacing:2px;
+    font-size:14px;
+    white-space:nowrap;
+    min-width:52px;
+    text-align:right;
+  }
+  .row-stars.empty{color:var(--text-faint);opacity:.35;}
+
+  .empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--text-faint);
+  }
+  .empty-state .big{font-family:'Shippori Mincho',serif;font-size:20px;color:var(--text-dim);margin-bottom:8px;}
+
+  footer{
+    margin-top:50px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    color:var(--text-faint);
+    font-size:12px;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  @media (max-width:520px){
+    .row{grid-template-columns:1fr auto;}
+    .row-stars{grid-column:2;grid-row:1;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="eyebrow">Personal BL Viewing Archive</p>
+    <h1>BLドラマ<span>図鑑</span></h1>
+    <p class="lede">通勤も、昼休みも、寝る間を惜しんで見てきたアジア圏＋αのBLドラマたち。国別・評価別に絞り込んで、次に見る一本を探せる個人アーカイブです。</p>
+    <div class="stat-row" id="statRow"></div>
+  </div>
+
+  <div class="pick" id="pickBox">
+    <div>
+      <p class="pick-label">今夜のセレクト</p>
+      <p class="pick-title" id="pickTitle">-</p>
+      <p class="pick-meta"><span class="row-stars" id="pickStars" style="font-size:13px;"></span> <span id="pickCountry"></span></p>
+      <p class="row-synopsis" id="pickSynopsis" style="margin-top:8px;"></p>
+    </div>
+    <button class="shuffle-btn" id="shuffleBtn">別の一本を引く</button>
+  </div>
+
+  <div class="controls">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B9BC4" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="タイトルで検索…">
+    </div>
+    <div class="stamps" id="stampRow"></div>
+    <div class="filter-row" id="filterRow">
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+
+  <div class="list" id="listBox"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <p class="big">該当する作品がありません</p>
+    <p>検索条件やフィルターを変えてみてください。</p>
+  </div>
+
+  <footer>henatyoko's BL archive — 240 titles · 8 countries · あらすじは★★以上の作品から順次追加中</footer>
+</div>
+
+<script>
+const DATA = [{"title": "30歳まで童貞だと魔法使いになれるらしい", "country": "日本", "rating": 2, "watching": false, "movie": false, "synopsis": "童貞のまま30歳を迎え「触れた人の心が読める」魔法を手にしたサラリーマンが、同僚の秘めた好意に気づき戸惑うラブコメ。"}, {"title": "美しい彼", "country": "日本", "rating": 2, "watching": false, "movie": false, "synopsis": "吃音を抱え孤立していた高校生が、クラスの頂点に立つカリスマに一途な想いを募らせていく純愛物語。"}, {"title": "美しい彼 シーズン2", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "大学生になった平良と新人俳優として奮闘する清居。恋人同士になった二人の、就職や将来を見据えた同棲生活の続編。"}, {"title": "消えた初恋", "country": "日本", "rating": 2, "watching": false, "movie": false, "synopsis": "片思い相手の消しゴムに書かれた名前をめぐる勘違いから、クラスメイト同士の複雑な恋模様が始まる青春ラブコメ。"}, {"title": "不幸くんはキスするしかない", "country": "日本", "rating": 2, "watching": false, "movie": false, "synopsis": "生まれつき不幸体質の大学生が、正反対の幸運体質な相手と偽装恋人になり、本物の恋に落ちていく。"}, {"title": "先輩、断じて恋では！", "country": "日本", "rating": 2, "watching": false, "movie": false, "synopsis": "チャラい天才CGクリエイターと無表情な新人後輩が、オフィスですれ違いながら少しずつ距離を縮めていく。"}, {"title": "Life 線上の僕ら", "country": "日本", "rating": 2, "watching": false, "movie": false, "synopsis": "高校時代に出会った二人が、大人になるまでの長い年月を通して愛と現実の間で揺れ動く姿を描く。"}, {"title": "オールドファッションカップケーキ", "country": "日本", "rating": 1, "watching": false, "movie": false, "synopsis": "何にも興味を持てず淡々と日々を過ごす39歳の上司と、彼を気にかけて連れ出す29歳の部下。年齢差のあるオフィスラブストーリー。"}, {"title": "his恋するつもりなんかなかった", "country": "日本", "rating": 1, "watching": false, "movie": false, "synopsis": "単身赴任の父を訪ねて江の島に来た男子高校生と、訳あって一人で暮らすサーフィン好きの同級生。友情から愛へと発展する青春BL映画。"}, {"title": "おっさんずラブ", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "恋愛にご無沙汰な40歳の春田creが、上司や後輩など複数の男性から次々と好意を寄せられる大人気コメディラブストーリー。"}, {"title": "絶対BLになる世界VS絶対BLになりたくない男", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "自分のいる世界がBL漫画の世界だと気づいた主人公が、周囲で次々と発生する男同士の恋愛フラグに巻き込まれまいと奮闘するギャグコメディ。"}, {"title": "きのう何食べた？", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "弁護士と美容師のゲイカップルが、日々の料理と暮らしを積み重ねていく人気コミックの実写化。ご飯と日常を軸にした大人のラブストーリー。"}, {"title": "ポルノグラファー", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "BL漫画家とそのアシスタントを中心に、複数のカップルの創作と恋愛模様を描くヨネダコウ原作の人気BL作品。"}, {"title": "君のことだけ見ていたい", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "小中高とずっと一緒だった幼なじみの男子高校生二人が、高校最後の夏に長年抱えていた想いに向き合っていく青春ラブストーリー。"}, {"title": "どうしても触れたくない", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "転職初日に無遠慮な上司と出会った青年が、過去の傷から一歩踏み出せずにいながらも次第に惹かれていく、静かで丁寧な大人のラブストーリー。"}, {"title": "his", "country": "日本", "rating": 1, "watching": false, "movie": true, "synopsis": "同性の恋人を持つ青年が、地元へ戻ったことで過去の恋人と再会し、周囲の偏見や自身の気持ちと向き合っていく青春映画。"}, {"title": "リスタートはただいまのあとで", "country": "日本", "rating": 0, "watching": false, "movie": true, "synopsis": "上司に人間性を否定され会社を辞め、10年ぶりに故郷へ戻った青年が、近所の農園を営む青年との交流を通じて心を癒やしていく純愛物語。"}, {"title": "窮鼠はチーズの夢を見る", "country": "日本", "rating": 0, "watching": false, "movie": true, "synopsis": "妻子ある元同級生の突然の求愛に戸惑いながらも惹かれていくサラリーマンの恋を描いた、小島梁子原作の人気BL映画。"}, {"title": "僕もアイツも新郎です", "country": "日本", "rating": 0, "watching": false, "movie": true, "synopsis": "結婚式当日、同性の恋人と結婚することをまだ親に話せていないと明かす新郎の姿を通して、同性婚と家族の在り方を描くドラマ。"}, {"title": "彼女が好きなものは", "country": "日本", "rating": 0, "watching": false, "movie": true, "synopsis": "ゲイであることを隠して生きる高校生と、BL好きを秘密にしているクラスメイトの女子生徒が、互いの秘密を通して自分らしさと向き合っていく青春映画。"}, {"title": "ケイ×ヤク（ちょっと違うけど風味あり）", "country": "日本", "rating": 2, "watching": false, "movie": false, "synopsis": "公安捜査官とヤクザの息子が「恋人のフリ」をしながら事件の真相を追う、危険な絆のサスペンス。"}, {"title": "みなと商事コインランドリー", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "都会のブラック企業から故郷に戻り祖父のコインランドリーを継いだアラサー男性と、常連の男子高校生が、歳の差を越えて惹かれ合っていく夏のラブストーリー。"}, {"title": "高良くんと天城くん", "country": "日本", "rating": 1, "watching": false, "movie": false, "synopsis": "クラスの人気者と地味だけど明るい同級生が、環境委員としての活動をきっかけに互いを意識し始め、内緒で付き合うことになる青春ラブコメ。"}, {"title": "壁サー同人作家の猫屋敷くんは承認欲求をこじらせている", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "BL同人作家の青年が、かつて想いを寄せていた幼なじみで人気アイドルの相手と再会し、承認欲求と恋心の間で揺れていくラブコメディ。"}, {"title": "ダブルミンツ", "country": "日本", "rating": 0, "watching": false, "movie": true, "synopsis": "同姓同名の高校時代の同級生二人が、支配と服従の歪んだ関係の中で強い絆を築いていく、中村明日美子原作のハードな愛憎劇。"}, {"title": "飴色パラドクス", "country": "日本", "rating": 1, "watching": false, "movie": false, "synopsis": "対照的な二人の男性の関係を描く人気BLコミックの実写化作品。"}, {"title": "ジャックフロスト", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "記憶喪失になった恋人と、記憶をなくす直前に別れ話をしていた青年が、一からやり直そうとする姿を描いたオリジナルBLドラマ。"}, {"title": "全ラ飯", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "誰にも言えない「全裸で食事する」という秘密の趣味を持つエリートサラリーマンが、思いがけない恋に落ちていくムズきゅんラブコメディー。"}, {"title": "僕らの食卓", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "人と食卓を囲むのが苦手な会社員と、年の離れた兄弟が、食事を通じて少しずつ心を通わせていくハートフルなドラマ。"}, {"title": "4月の東京は…", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "10年ぶりに再会した二人が、過去の真実と向き合いながら関係を築き直していく、累計30万部突破の人気BLコミック原作ドラマ。"}, {"title": "体感予報", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "同居を始めたエロ漫画家と、表向きは爽やかな気象予報士。晴れの日と雨の日で態度が変わる相手に振り回されていく新感覚ラブストーリー。"}, {"title": "君となら恋をしてみても", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "本気の恋はできないと諦めていたゲイの高校生が、転校先で出会った世話焼きの同級生との交流を通じて気持ちの変化に気づいていく青春BL。"}, {"title": "君には届かない。", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "幼なじみで親友同士の男子高校生二人が、互いへの気持ちに気づいていく、ピクシブ発の人気コミック原作の青春ラブストーリー。"}, {"title": "パーフェクトプロポーズ", "country": "日本", "rating": 1, "watching": false, "movie": false, "synopsis": "パワハラで疲れ切ったサラリーマンが、昔世話をしていた年下の青年と同居することになり、彼の料理と優しさに心を癒やされ惹かれていく物語。"}, {"title": "恋をするなら二度目が上等", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "高校時代に破局した初恋相手と偶然再会したビジネス誌編集者が、素直になれないまま再び惹かれていく大人の再会ラブストーリー。"}, {"title": "彼のいる生活", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "大学進学を機に幼なじみとルームシェアを始めた青年が、相手の想いを知ったことで自分の気持ちにも変化が訪れていく王道純愛ラブコメディ。"}, {"title": "ひだまりが聴こえる", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "難聴によって人と距離を置くことが当たり前になった大学生と、明るくまっすぐな同級生が、ノートテイクというボランティアを通じてつながっていく物語。"}, {"title": "コスメティック・プレイラバー", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "仕事熱心な美容部員と、生意気な後輩が、コスメカウンターでの仕事を通じて互いを尊敬し合いながら恋に発展していくお仕事ラブストーリー。"}, {"title": "Love in The Air", "country": "日本", "rating": 0, "watching": false, "movie": false, "synopsis": "タイの大ヒットBLドラマを日本の大学を舞台にリメイクした作品。対照的な2組のカップルの恋の駆け引きを描く。"}, {"title": "タカラのびいどろ", "country": "日本", "rating": 1, "watching": false, "movie": false, "synopsis": "以前慰めてくれた先輩のことが忘れられず上京してきた後輩が、冷たく突き放されながらもめげずに気持ちを伝えようとする世話焼き先輩×ピュア後輩の恋物語。"}, {"title": "未成年", "country": "日本", "rating": 1, "watching": false, "movie": false, "synopsis": "勉強しか知らない模範生と、家庭に問題を抱えるクラスメイトが出会い、互いに影響を与え合いながら関係を深めていく韓国発BL作品の日本リメイク。"}, {"title": "2gether", "country": "タイ", "rating": 2, "watching": false, "movie": false, "synopsis": "女性を口説きたい大学生が、しつこい告白をかわすため学内一の人気者に偽装彼氏を頼み、本物の恋に発展していく世界的ヒット作。"}, {"title": "Still 2gether", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "大学2年生になったタインとサラワット。同棲生活が続く中、学内での立場の変化とともに新たな試練が訪れる、2getherのスピンオフ続編。"}, {"title": "2gether THE MOVIE", "country": "タイ", "rating": 0, "watching": false, "movie": true, "synopsis": "本編13話とスピンオフ「Still 2gether」の要素を組み込み、撮り下ろしシーンやボイスオーバーを加えた「2gether」の劇場版総集編。"}, {"title": "TharnType", "country": "タイ", "rating": 2, "watching": false, "movie": false, "synopsis": "反ゲイの寮長と、彼を挑発するように迫る後輩が同室生活を通じて惹かれ合っていく、シリーズの原点となった人気作。"}, {"title": "TharnType2-7years of Love", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "大学生になったターンとタイプの7年後を描く続編。長く続く関係だからこその新たな課題や家族の理解といったテーマに向き合っていく。"}, {"title": "TharnType Special Episode", "country": "タイ", "rating": 1, "watching": false, "movie": true, "synopsis": "TharnTypeシリーズの特別編。本編で描き切れなかったターンとタイプのエピソードを追加収録した特別版。"}, {"title": "Don't Say No", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "TharnType2のサブカップル、レオとフィアットに焦点を当てたスピンオフ。幼なじみから恋人になった二人の不器用な関係を描くオリジナルストーリー。"}, {"title": "Until We Meet Again", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "前世の記憶と輪廻転生をテーマにしたタイBLの名作。過去に一緒に命を落とした二人の魂が、現代の大学生として再び出会い、運命的に惹かれ合っていく物語。"}, {"title": "Manner Of Death", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "検死官と刑事が事件の真相を追う中で惹かれ合っていく、社会派テーマを含む本格クライムサスペンスBL。"}, {"title": "EN OF LOVE", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "大学を舞台にした3組の恋を描くオムニバスドラマ。「TOSSARA」「Love Mechanics」「This Is Love Story」の3作からなる人気シリーズ。"}, {"title": "LOVE BY CHANCE", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "偶然をきっかけに始まった恋が運命の恋に変わっていく、4組8人の大学生たちの群像ラブストーリー。数々の賞を受賞したタイBLの人気作。"}, {"title": "LOVE BY CHANCE2 / A CHANCE TO LOVE", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "けんかばかりだった二人が、一度は結ばれなかった過去を経て、もう一度恋をしていく「Love By Chance」の続編。"}, {"title": "My Engineer 〜華麗なる工学部〜", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "工学部の人気者と医学部の後輩がバラの花の罰を通じて距離を縮めていく、複数カップルの恋と友情を描いた工学部を舞台にしたコメディ。"}, {"title": "SOTUS", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "厳しい先輩後輩制度「SOTUS」がある大学の工学部を舞台に、後輩コングポップと厳格な先輩アーティットが反発しながらも惹かれ合っていくタイBLの金字塔的作品。"}, {"title": "SOTUS S", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "SOTUSの続編。工学部のリーダーとなったコングポップと、社会人になったアーティットが、環境の変化の中で人生の岐路に立つ姿を描く。"}, {"title": "Together with me", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "幼なじみのコーンとノックが一夜を共にしたことをきっかけに始まる、三角関係を含むドロドロとした愛憎劇。"}, {"title": "Together with me：The Next Chapter", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "コーンとノックのその後を描く「Together with me」シリーズ第3弾。恋人から伴侶へと関係が深まる過渡期を描く。"}, {"title": "KinnPorsche", "country": "タイ", "rating": 2, "watching": false, "movie": false, "synopsis": "裏社会の御曹司と彼を守るボディガードが、危険と隣り合わせの中で信頼と愛情を育んでいくアクション色の強い話題作。"}, {"title": "I Told Sunset About You", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "大学受験を控えた幼なじみの二人が、海辺の町でチューターと生徒として過ごす夏を通して、少しずつ気持ちが変化していく繊細な青春ドラマ。"}, {"title": "I Promised You the Moon", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「A Tale of Thousand Stars」の続編。NGO医師と森林保護官として離れて暮らす二人が、距離を越えて関係を育んでいく。"}, {"title": "バンコク・ラブストーリー イノセンス", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "様々な事情を抱えた若者たちの人生が交錯するバンコクを舞台にした群像劇。BL要素を含む複数のカップルの物語が同時進行する。"}, {"title": "Call It What You Want", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "タイBLドラマを制作する監督と主演俳優の間に生まれる、誰にも言えない秘めた恋を描く、業界の裏側にも切り込んだメタ的なBLドラマ。"}, {"title": "Call It What You Want Season2", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「Call It What You Want」の続編。BLドラマ制作の舞台裏を描きながら、監督と俳優の関係のその後を描く。"}, {"title": "Enchanté", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "フランスから戻った青年が、図書館の本に書かれた匿名のメッセージの主を探すうちに、幼なじみとの関係が変化していく青春ラブストーリー。"}, {"title": "Lovely Writer", "country": "タイ", "rating": 2, "watching": false, "movie": false, "synopsis": "気難しい脚本家と主演俳優が、撮影現場でのぶつかり合いを通じて距離を縮めていくオフビートな恋愛劇。"}, {"title": "2Moons2", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "大学のミスターコンテストを舞台に、片思いを貫く新入生や恋多きプレイボーイなど、3組のカップルの恋模様を描く「2Moons」シリーズ第2弾。"}, {"title": "Nitiman", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "法学部の優等生で人気者のビボムが、SNS上で衝突した相手と次第に恋人のように振る舞い始める、大学を舞台にした恋物語。"}, {"title": "Gen Y", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "大学生の友人グループの日常と恋愛模様を描く青春群像劇。複数のカップルの物語が同時に描かれる人気シリーズ。"}, {"title": "A Tale of Thousand Stars", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "NGOの医師が、地方の村で森林保護官の青年と出会い、都会と田舎、それぞれの生き方の違いを越えて惹かれ合っていく物語。"}, {"title": "Dark Blue Kiss", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「Kiss Me Again」の続編。弟同士のカップルにスポットを当て、若者たちが人生の選択に悩みながら成長していく姿を描く。"}, {"title": "WHY R U?", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "大学生のゾンが、妹の書いたBL小説がなぜか現実になっていくという不思議な体験を通して、いけ好かない同級生に惹かれていく物語。"}, {"title": "SaifahZon Story", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「WHY R U?」のカップル、サイファーとゾンのその後を描くスピンオフ。二人の関係が本物かどうかを問い直す物語。"}, {"title": "7 PROJECT", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "同じ学園を舞台に、同性愛や異性愛など多様な恋愛模様を描く7組のカップルのロマンスを1話ずつ収めたオムニバスドラマ。"}, {"title": "Y-Destiny", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "誕生日の曜日によって運命や性格が異なるという設定のもと、7人の親友たちがそれぞれの恋と別れを経験していく群像ラブストーリー。"}, {"title": "Water Boyy", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "大学の水泳部を舞台に、部員たちの恋愛や友情、家族の問題を描いた青春ドラマ。BLに限らず様々なカップルが登場する。"}, {"title": "I Am Your King", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "酔った勢いで始めた王様ゲームの命令をきっかけに、同級生同士の関係が入れ替わっていくラブコメディ。"}, {"title": "I Am Your King Season 2", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「I Am Your King」の続編。新たな舞台と登場人物で描かれるシリーズ第2弾。"}, {"title": "YYY", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "火災でアパートを追い出されそうになった青年が、大家がBL好きだと知り、偶然出会った相手に彼氏のふりを頼んだことから始まる、女人禁制アパートを舞台にしたコメディ。"}, {"title": "Theory of love", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "映画制作を学ぶ大学生が、親友への叶わないと思っていた恋心に向き合っていく、切ない片想いを描いたタイBLの人気作。"}, {"title": "Theory of Love[特別編]", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「Theory of Love」の特別編。本編のその後を描くスペシャルエピソード。"}, {"title": "NOT ME", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "昏睡状態の双子の兄の代わりに戻ってきた青年が、兄の身元を偽りながら、社会運動に関わるグループや謎の人物との関わりに巻き込まれていく社会派サスペンスBL。"}, {"title": "Cutie Pie", "country": "タイ", "rating": 2, "watching": false, "movie": false, "synopsis": "家同士が決めた許嫁関係から始まった二人が、戸惑いながらも本物の気持ちに気づいていく王道ラブコメ。"}, {"title": "LOVE STAGE!!", "country": "タイ", "rating": 0, "watching": true, "movie": false, "synopsis": "子役として共演した幼なじみの俳優と漫画家志望の青年が、大人になって再会し、周囲の勘違いをきっかけに関係を深めていく人気BL漫画のタイ版リメイク。"}, {"title": "Love in the Air", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "小説「Love Storm」「Love Sky」を融合させた作品。対照的な2組のカップルの、偶然の出会いから始まる恋と駆け引きを描く。"}, {"title": "Golden Blood", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "特別な血を持つために幼い頃からマフィアの養子として育てられた青年が、養父の実の息子のボディーガードを任され、次第に惹かれ合っていく物語。"}, {"title": "Bad Buddy", "country": "タイ", "rating": 2, "watching": false, "movie": false, "synopsis": "対立する家同士に育った幼なじみが、周囲に隠れてこっそり惹かれ合っていく、演出と演技で高く評価された人気作。"}, {"title": "Fish Upon the Sky", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "占星術アプリを開発する青年と人気アイドルが、偶然の出会いをきっかけに惹かれ合っていくラブストーリー。"}, {"title": "Star in My Mind", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "人気俳優と、彼を支える制作スタッフが、芸能界の華やかさと厳しさの中で育んでいく恋を描く。"}, {"title": "Sky In Your Heart", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「Star in My Mind」のサブカップルにスポットを当てたスピンオフ作品。"}, {"title": "Tonhon Chonlatee", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "ゲイであることを隠して友人代行の仕事をする青年が、裕福な家庭の跡取り息子から恋人役を依頼されたことをきっかけに、本物の恋に落ちていく物語。"}, {"title": "Vice Versa", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "タイと韓国の合作。鏡を通じて時代を越えて入れ替わってしまった若者たちの運命を描くファンタジーラブストーリー。"}, {"title": "The Eclipse", "country": "タイ", "rating": 2, "watching": false, "movie": false, "synopsis": "全体主義的な男子校を舞台に、生徒会の秩序に抗う少年たちの反抗と恋が絡み合う社会派ラブストーリー。"}, {"title": "Ingredients", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "「Bad Buddy」の主人公二人の少年時代を描いた短編。対立する家庭に育った二人がまだ幼い頃の出会いを描く。"}, {"title": "Why You… Y Me?", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "対照的な性格の二人の学生が、様々なすれ違いを経ながら惹かれ合っていく青春ラブストーリー。"}, {"title": "He's Coming To Me", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "幽霊が見える力を持つ大学生が、キャンパスで亡くなった人気者の霊と出会い、彼の未練を解消する手助けをしていく中で心を通わせていく物語。"}, {"title": "Big Dragon", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "野良犬が人間の姿に変身するというファンタジー要素のある物語。孤独な青年と不思議な力を持つ相手の恋を描く。"}, {"title": "The Best Story", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "「En Of Love」で人気を博したペアが出演する、高校生の初恋を描いた短編BLドラマ。"}, {"title": "21 Days Theory", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "人気と実力を兼ね備えたスター高校生と、母親の勧めでオーディションに挑戦する高校生が、21日間の賭けをきっかけに距離を縮めていく物語。"}, {"title": "Once In Memory", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "実話を元にした、男子高校生同士の一目惚れから始まる恋を描いた短編BLドラマ。"}, {"title": "My Gear And Your Gown", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "対立する学芸部と運動部の部長を務める二人の高校生が、部室を共有することになったことをきっかけに惹かれ合っていく青春ラブストーリー。"}, {"title": "Ghost Host Ghost House", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "家族惨殺事件があった心霊スポットの廃墟に忍び込んだ若者たちが、そこに住む幽霊のホストたちと関わっていく、笑いと切なさを併せ持つホラー×BLコメディ。"}, {"title": "With Love", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "シェアハウスで共同生活を送る若者たちの、それぞれの恋と葛藤を描く群像ラブストーリー。"}, {"title": "Love Mechanics", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "工学部の先輩と後輩が、失恋の傷心をきっかけにした一夜の関係から、本当の想いに気づいていく切ない恋を描く。"}, {"title": "Between Us", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "「Until We Meet Again」のスピンオフ。水泳部の副部長と新入部員が、衝突しながらも支え合い、想いを結んでいく物語。"}, {"title": "The Tuxedo", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "自己中心的な性格の御曹司と、腕の良いテーラーが、スーツ作りを通じてぶつかり合いながら惹かれ合っていく物語。"}, {"title": "Dear Doctor", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "死神が見えるという不思議な力を持つ外科医が、人の命を救いたいという想いと死神との奇妙な関係の狭間で揺れる、医療×ファンタジーのラブストーリー。"}, {"title": "Ai Long Nhai", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "留学先で自由奔放に過ごしていた青年がタイに連れ戻され、あひるのキーホルダーを大切にするおっちょこちょいな青年との本気の恋に落ちていく物語。"}, {"title": "To Sir With Love クンチャイ", "country": "タイ", "rating": 0, "watching": true, "movie": false, "synopsis": "同性愛が認められていなかった時代のタイ社会を背景に、家督を継ぐ立場の青年の愛と家族の物語を描く。"}, {"title": "Never Let Me Go", "country": "タイ", "rating": 0, "watching": true, "movie": false, "synopsis": "対立する立場に生まれ育った二人が、危険と隣り合わせの中で信頼と愛情を育んでいくアクション要素のあるラブストーリー。"}, {"title": "My School President", "country": "タイ", "rating": 0, "watching": true, "movie": false, "synopsis": "学生自治会長とバンドメンバーの高校生が、生徒会活動を通じて距離を縮めていく学園ラブコメディ。"}, {"title": "You're My Sky", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "対照的な性格の二人が、偶然の出会いをきっかけに惹かれ合っていく青春ラブストーリー。"}, {"title": "Remember Me", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "小さな町に住む幼なじみグループが、文通から始まった関係やそれぞれの家族との向き合い方を通じて成長していく青春群像劇。"}, {"title": "Step by Step", "country": "タイ", "rating": 0, "watching": true, "movie": false, "synopsis": "横暴な先輩に振り回される新入社員が、会社の御曹司に助けられたことをきっかけに惹かれていくオフィスラブストーリー。"}, {"title": "Bed Friend", "country": "タイ", "rating": 0, "watching": true, "movie": false, "synopsis": "医学部の学生たちが友情以上恋人未満の関係「ベッドフレンド」の約束を交わすが、本当の気持ちに気づいていく群像ラブストーリー。"}, {"title": "Great Men Academy（入れ替わり系）", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "願いを叶えてもらう代わりに男の姿に変身してしまった女子高生が、片思いの相手に近づくため男子校に潜入する、ファンタジー要素のある学園ラブコメディ。"}, {"title": "The Shipper（入れ替わり系）", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "BLカップリングを妄想して小説を書く女子高生二人が、対立する先輩二人を巻き込んだ事故をきっかけに、その二人の体が入れ替わってしまうという学園コメディ。"}, {"title": "Be Mine. Superstar", "country": "タイ", "rating": 0, "watching": true, "movie": false, "synopsis": "大学生のファンと人気俳優が、恋愛指南をきっかけに立場の違いを越えて距離を縮めていく、秘密のラブストーリー。"}, {"title": "180 Degree Longitude Passes through Us", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "成功した女性監督と十代の息子が親友のような絆で結ばれている中、息子が母の旧友に初恋をしたことで揺れ動く関係を描く物語。"}, {"title": "Wedding Plan", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "ウエディングプランナーの青年と、新郎として訪れたビジネスマンが、あるウソをきっかけに複雑に絡み合っていく関係を描くラブストーリー。"}, {"title": "愛の香り", "country": "タイ", "rating": 1, "watching": false, "movie": false, "synopsis": "若き建築家が事故をきっかけに1920年代のタイにタイムスリップし、そこで出会った青年との時を越えたロマンスを描くBL×時代劇。"}, {"title": "Night Dream", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "卒業課題に悩む文学部生が、高校時代に音信不通になっていた親友と再会し、昔の関係を取り戻していく中で想いに気づいていく物語。"}, {"title": "Wandee Goodday", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "恋のトラブルを解決するプロの弁護士が、依頼人の元恋人を取り戻す手伝いをする中で、別の相手に本気で恋をしてしまうラブコメディ。"}, {"title": "TRIAGE", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "患者を救えなかった研修医が、その青年を救うまで何度も時間を巻き戻すタイムループに陥る、医療×ファンタジーのラブストーリー。"}, {"title": "Secret Love", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "事故で両親を亡くし裕福な家庭に養子として引き取られた青年が、養父の息子との一つ屋根の下での暮らしの中で秘めた想いを抱いていく物語。"}, {"title": "Laws of Attraction", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "野心的な弁護士と実直なテコンドー講師が、ある事件の真相を追う中で、対照的な性格ながらも距離を縮めていくサスペンスラブストーリー。"}, {"title": "Bed Friend", "country": "タイ", "rating": 0, "watching": false, "movie": false, "synopsis": "医学部の学生たちが友情以上恋人未満の関係「ベッドフレンド」の約束を交わすが、本当の気持ちに気づいていく群像ラブストーリー。"}, {"title": "Wish you", "country": "韓国", "rating": 0, "watching": false, "movie": true, "synopsis": "父に反対されながらも歌手を目指す青年と、彼を支える幼なじみのミュージシャンを描く、韓国BL初期の音楽ラブストーリー。"}, {"title": "To My Star", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "スキャンダルに巻き込まれたトップスターが、身を潜めた先の内気なシェフの家に転がり込み、次第に距離を縮めていくラブコメディ。"}, {"title": "To My Star2", "country": "韓国", "rating": 2, "watching": false, "movie": false, "synopsis": "人気俳優と料理人の恋人同士が、公私にわたる立場の違いに向き合いながら関係を続けていく続編。"}, {"title": "Mr.ハート", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "マラソンの新記録保持者である先輩と、彼のペースメーカーに抜擢された後輩が、練習を重ねる中で気持ちが変化していく青春スポーツ×BL。"}, {"title": "君の視線が止まる先に", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "財閥の後継者と、彼を守り続けるボディーガードの幼なじみが、主従関係を越えた想いに気づいていく韓国初のBLドラマ。"}, {"title": "カラーラッシュ", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "色覚異常で世界が灰色にしか見えない青年が、運命の相手と出会うと世界が色づくという特殊設定のファンタジーBL。"}, {"title": "カラーラッシュ Season2", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "母の失踪の謎を追いながら、運命の相手との絆を深めていく「カラーラッシュ」の続編。"}, {"title": "You Make Me Dance", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "闇金業者に多額の借金の返済を迫られた現代舞踊専攻の青年が、ダンスへの情熱を通じて相手との関係を変えていく物語。"}, {"title": "LONG TIME NO SEE", "country": "韓国", "rating": 0, "watching": false, "movie": true, "synopsis": "殺し屋の青年と、彼に想いを寄せる読者を巡るアクション要素のあるBL映画。"}, {"title": "冬すぎて桜", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "事故で両親を亡くし幼なじみの家に引き取られた青年と、彼に冷たい態度を取っていた幼なじみが、高校3年で同じクラスになり関係を深めていく物語。"}, {"title": "The Tasty Florida", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "人気中華レストラン「フロリダ飯店」を舞台に、大学新入生とシェフが織りなす短編ラブストーリー。"}, {"title": "Behind Cut", "country": "韓国", "rating": 2, "watching": false, "movie": false, "synopsis": "夢を模索する配達員の青年が、ファッション業界のデザイナーやモデルと出会い、三角関係の中で揺れる。"}, {"title": "ひかり男子高生徒会", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "友達ができず孤立していた高校生が生徒会に誘われ、会長や副会長との交流を通じて恋と友情を育んでいく学園BL。"}, {"title": "プンドク荘304号室の事情", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "シェアハウスのオーナーと、そこに新しく越してきたルームメイトが、家と職場で立場が逆転する関係を築いていくラブコメディ。"}, {"title": "5番地シェアハウス", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "詐欺で財産を失い実家のシェアハウスの管理人になった青年と、個性豊かな5人の住人たちが繰り広げる同居ラブコメディ。"}, {"title": "リュソンビの婚礼式", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "身を守るため女装して兄の代わりに嫁いだ青年と、その夫となった青年の、朝鮮時代を舞台にした偽装結婚ロマンス。"}, {"title": "メソッド", "country": "韓国", "rating": 0, "watching": false, "movie": true, "synopsis": "同性愛をテーマにした舞台で共演することになったベテラン俳優と人気アイドルが、演技を通じて本物の感情に向き合っていく韓国映画。"}, {"title": "Ocean Likes Me", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "心に傷を負い海辺でうどん店を開いた青年と、そこで出会った謎めいた青年が、互いに癒やされながら惹かれ合っていく物語。"}, {"title": "Blueming～君に染まる", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "大学の映画科で出会った、外見にコンプレックスを持つ青年と裕福で才能あふれる同級生が、静かに心を通わせていく人気BL漫画原作作品。"}, {"title": "僕らの恋は授業中です", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "「恋愛と結婚」の授業でペアになった先輩後輩の関係が、周囲の噂と誤解に振り回されながら変化していく青春BL。"}, {"title": "My Sweet Dear THE MOVIE", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "料理長の座をかけて対決することになった正統派シェフと天才肌シェフが、次第に惹かれ合っていくお仕事ラブストーリーの映画版。"}, {"title": "君の唇を噛みたい", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "消滅の危機にある500年生きるヴァンパイアと、彼が生き延びる鍵となる「純血人間」の大学生の、宿命を背負ったファンタジーラブロマンス。"}, {"title": "Semantic Error", "country": "韓国", "rating": 2, "watching": false, "movie": false, "synopsis": "白黒はっきりさせたい理系学生と自由奔放な美大生が、大学の課題プロジェクトをきっかけにすれ違いながら惹かれ合う。"}, {"title": "Once Again", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "15年前に助けてくれた憧れの人を過去に戻って救おうとする青年の、時を越えたタイムスリップラブストーリー。"}, {"title": "君色に染められて", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "絵の中に導かれ朝鮮王朝時代にタイムスリップした男子高校生が、流刑にされた世子とその護衛との絆を深めていくファンタジー時代劇。"}, {"title": "フェンスの外はハッピーエンド", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "大御所作家の不正を告発し文学界から追放された天才作家と、彼を守ろうとするベストセラー作家、そして出版社代表の三角関係を描くラブストーリー。"}, {"title": "初恋だけ3度目", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "初恋を実らせるため300年間の記憶を持って生まれ変わった人気小説家が、生まれ変わった初恋の相手と再会する運命的なラブストーリー。"}, {"title": "新入社員", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "仕事一筋のカタブツ上司と、内定を勝ち取った純粋な新人インターンが、社内秘密のオフィスラブを繰り広げる人気ウェブ漫画原作作品。"}, {"title": "春情の乱", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "借金返済のため身分を偽り女装して嫁いだ青年と、その夫となった青年、さらに彼に執着する男を巡る、運命に翻弄された3人の時代劇ラブロマンス。"}, {"title": "Oh! My Assistant", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "官能的なウェブ漫画を描く漫画家が、新しく雇ったアシスタントとの関係を通じて創作意欲と感情を取り戻していくラブコメディ。"}, {"title": "それぞれの事情", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "崖っぷちの映画監督が、4年前に姿を消した人気ウェブ小説家の原作者と再会し、初恋の答え合わせをしていくラブストーリー。"}, {"title": "僕らの恋愛シミュレーション", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "高校卒業式に告白して姿を消した青年と、彼を7年間探し続けていた親友が、職場で再会し関係を育んでいくオフィスラブストーリー。"}, {"title": "僕らに乾杯！", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "お酒が苦手なシェフと、お酒が大好きな会社員が、飲食を通じて距離を縮めていくほろ酔いラブストーリー。"}, {"title": "8番目の感覚", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "上京したばかりの大学新入生と、完璧な先輩の同情から始まった関係が、嫉妬や独占欲へと変化していく青春キャンパスロマンス。"}, {"title": "ショルダー・トゥ・クライ・オン", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "奨学金でアーチェリー特待生として入学した青年と、学校一の人気者のクラスメイトが、憎しみと恋の境界で揺れ動いていく高校生BL。"}, {"title": "変人上司に振り回されてます", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "前世からの因縁により300年待ち続けた理事と、彼の恋愛対象となる神の子の青年が、過去生の呪いを解くために本当の愛を探すファンタジーBL。"}, {"title": "俺は恋愛なんか求めてない！", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "不正のとばっちりで会社を解雇された青年が、旅先で出会った天才陶芸家との嘘から始まる関係を通じて本物の愛に気づいていく大人のラブストーリー。"}, {"title": "ラブメイト", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "愛など信じないと決めた先輩と、彼に一目惚れした一途な新人後輩が繰り広げるオフィスラブストーリー。"}, {"title": "ハッピーメリーエンディング", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "結婚式場の伴奏者と歌手のカップルを描く、音楽を通じた韓国BLラブストーリー。"}, {"title": "JunとJun", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "元アイドルのインターン社員と、初恋相手だった本部長が、同じ名前と過去の縁をきっかけに再会するオフィスロマンチックコメディ。"}, {"title": "スターストラック", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "少年時代から親友同士だった高校生二人が、大学受験を控えた環境の変化の中で、友情から関係が変化していく姿を描く。"}, {"title": "僕らの恋は授業中です2", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "「僕らの恋は授業中です」の続編。前作の二人のその後の関係を描く。"}, {"title": "ラブトラクター", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "不眠症に悩む都会の青年が、祖父の村へ逃げるように移り住み、農業を愛する村人との交流を通じて心を癒やしていく物語。"}, {"title": "君の歌になる～ついてきてバラム～", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "初恋に破れバンドのリーダーとなった青年と、ギター教室での出会いをきっかけに彼に惹かれていく奔放な青年の音楽ラブストーリー。"}, {"title": "ボナペティ！", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "大学時代の先輩後輩がたまたま隣同士の部屋に住むことになり、食事を通じて恋愛関係へと発展していく料理系BLドラマ。"}, {"title": "Gray Shelter～灰色の気流", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "母の再婚で義理の兄弟となった二人が、それぞれ抱える家庭の事情や過去を通して再び心を通わせていく物語。"}, {"title": "告白ができず", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "理想のタイプへのこだわりが強く告白できない優等生と、彼に「告白しろ」と迫る同級生の同居生活から始まるラブコメディ。"}, {"title": "BUMP UP BUSINESS～恋するバックステージ～", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "デビューが決まった練習生と、スキャンダルを抱えるいわくつきの先輩がユニットを組み、恋人を演じる「ビジネスカップル戦略」から始まる物語。"}, {"title": "Love is like a cat", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "スキャンダルをネタに脅されバラエティ番組でドッグカフェのお仕事体験をすることになった、動物嫌いの人気スターの物語。"}, {"title": "恋愛至上主義区域", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "先輩の書いた小説がゲーム化された世界に迷い込んだ主人公が、不幸な運命を背負う小説の登場人物を幸せにしようと奮闘するラブファンタジー。"}, {"title": "ジャズのように", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "音楽をテーマに、クラシックとジャズという対立軸を通して描かれる男子高校生5人の成長と恋愛を描く青春群像劇。"}, {"title": "僕の指先に君の温度が触れる時", "country": "韓国", "rating": 1, "watching": false, "movie": false, "synopsis": "父の事故死をきっかけに地元に戻った青年と、母親同士の縁で彼の家に居候することになった幼なじみが、互いへの想いに気づいていく物語。"}, {"title": "Bad Guy", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "婚約者がいながらも元恋人に会いに行く青年の、複雑な感情を描いた韓国BLショートドラマ。"}, {"title": "Blue Boys", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "就職活動に疲れた年下の青年と、夜の仕事をする同級生が、一夜をきっかけに関係を育んでいく短編BLドラマ。"}, {"title": "テコンドーの呪いを解いて", "country": "韓国", "rating": 2, "watching": false, "movie": false, "synopsis": "暴力的な父の道場で育った高校生と、そこにやってきたテコンドー特待生が互いの傷を癒やし合うが、12年後に再会する。"}, {"title": "マッチプレイ", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "生意気な人気アイドルと、彼の指導を任されたプロ意識の高いスタントマンが、厳しい練習を通じて距離を縮めていくショートドラマ。"}, {"title": "天気予報のような恋愛", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "激しい感情のぶつかり合いを排し、日常の中で静かに育まれていく愛を描いた穏やかなラブストーリー。"}, {"title": "君を味わいたい", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "いつも失恋してばかりの青年と、学校一モテる後輩が「先にどちらが相手を落とせるか」を賭けたラブバトルを繰り広げるショートドラマ。"}, {"title": "アクセント", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "大学のバスケ部主将と、高校時代に仲が良かったが休学明けに再会した同級生が、かつての関係を取り戻していく青春スポーツBL。"}, {"title": "BUDDYBOY", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "都会から田舎に引っ越してきた青年が、そこで出会った青年に強く惹かれていく中で、複雑な三角関係に巻き込まれていく物語。"}, {"title": "乙の恋愛", "country": "韓国", "rating": 0, "watching": false, "movie": false, "synopsis": "8年ぶりに再会した二人が、かつての誤解を解きながら関係を再構築していく「主導権を持たない者の恋愛」をテーマにした人気ウェブ小説原作作品。"}, {"title": "We Best Love 永遠の1位", "country": "台湾", "rating": 2, "watching": false, "movie": false, "synopsis": "幼い頃からずっと「万年2位」だった大学生と、いつも一位を取る幼なじみの間に芽生える友情以上の想い。"}, {"title": "We Best Love 2位の反撃", "country": "台湾", "rating": 2, "watching": false, "movie": false, "synopsis": "前作から数年後、一度は離れた二人が社会人になって再会し、関係を修復していく続編。"}, {"title": "君の心に刻んだ名前", "country": "台湾", "rating": 0, "watching": false, "movie": true, "synopsis": "戒厳令解除直後の1980年代台湾を舞台に、カトリック系男子校に通う二人の青年が友情を超えた想いに気づいていく、時代の偏見と向き合う青春映画。"}, {"title": "HIStory 離れて、離さないで", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "親の再婚で義理の兄弟になった大学生とアイドルが、同居生活を通じて次第に惹かれ合っていく、HIStoryシリーズ第1弾の一編。"}, {"title": "HIStory 僕の悪魔", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "恋人に振られ命を落とした青年が9年前の出会いの日に戻り、運命を変えようとするタイムリープ要素のあるラブストーリー。"}, {"title": "HIStory マイ・ヒーロー", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "神の手違いで命を落とした令嬢が、恋人の親友の体を借りて7日間だけ蘇る、ファンタジー要素のあるHIStoryシリーズの一編。"}, {"title": "HIStory2 是非～ボクと教授", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "バツイチで娘を育てるシングルファーザーの大学教授と、教え子の大学生が、家族の絆を通じて愛を育んでいく大人のラブストーリー。"}, {"title": "HIStory2 君にアタック", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "怪我でバレー選手の夢を諦めた先輩と、その代わりに夢を追う後輩が、バレーボールを通じて惹かれ合っていく青春ラブロマンス。"}, {"title": "HIStory3 圏套～ラブ・トラップ", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "4年前の未解決事件を追う刑事と、事件の唯一の生き残りであるヤクザ組織の男が、互いの目的の狭間で結ばれていくサスペンスラブストーリー。"}, {"title": "HIStory3 那一天～あの日", "country": "台湾", "rating": 1, "watching": false, "movie": false, "synopsis": "学年トップの秀才に惹かれていく人気者の高校生と、アルバイト先で出会った相手に惹かれるもう一組のカップルを描く青春群像劇。"}, {"title": "HIStory4 隣のきみに恋して", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "初恋の女性の気を引くために「ゲイのふり」を始めた男が、いつしか本当の恋に落ちていくHIStoryシリーズ第4弾。"}, {"title": "HIStory5 未来のきみに出逢って", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "時空を越えた運命の恋と、社長と新人社員の恋という2組のカップルを描く、HIStoryシリーズ第5弾のファンタジー・ラブストーリー。"}, {"title": "Because Of You", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "台湾大企業の後継者である異母3兄弟が、それぞれ運命的な相手と出会い恋に落ちていく、HIStoryに続く台湾BLドラマ。"}, {"title": "Be Loved in House 約・定～I Do", "country": "台湾", "rating": 1, "watching": false, "movie": false, "synopsis": "会社を買収した冷徹な新社長と、恋愛禁止規定に振り回されるツンデレ社員が、同居生活の中で少しずつ距離を縮めていく。"}, {"title": "Craving You～君に焦がれて～", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "過去の恋愛で傷ついたパティシエと人気シンガーソングライターが、コラボ企画をきっかけに惹かれ合っていくスイーツ店を舞台にしたラブストーリー。"}, {"title": "隔離が終わったら、会いませんか", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "台湾で隔離期間を過ごす日本人男性と、番号違いのメッセージから縁が生まれた台湾人大学生が、画面越しに恋を育てていくリモートBLドラマ。"}, {"title": "正負之間", "country": "台湾", "rating": 1, "watching": false, "movie": false, "synopsis": "幼なじみの弁護士同士と、犬猿の仲だった店舗経営者同士、性格が正反対な2組のカップルを描く大人のBLドラマ。"}, {"title": "About Youth", "country": "台湾", "rating": 1, "watching": false, "movie": false, "synopsis": "父を亡くし目立たない存在だった高校生が、学校の人気者に助けられたことをきっかけに親しくなっていく、友情と恋に揺れる青春ラブストーリー。"}, {"title": "My Tooth Your Love", "country": "台湾", "rating": 1, "watching": false, "movie": false, "synopsis": "重度の歯科恐怖症を持つビストロオーナーと、厳格な歯科医が、通院をきっかけに惹かれ合っていくクリニックを舞台にしたラブコメディ。"}, {"title": "DNA Says Love You", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "縁やミステリー要素を絡めながら描かれる、運命的な出会いをテーマにした台湾BLドラマ。"}, {"title": "Dark Blue and Moonlight", "country": "台湾", "rating": 1, "watching": false, "movie": false, "synopsis": "プールで見かけた相手にひと目惚れした青年が、連絡先を失ってしまったことで運命がすれ違っていく、4人の恋模様を描く台湾BL人気作。"}, {"title": "Stay by My Side", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "幽霊の声が聞こえるようになった青年と、家出してきたエリート転校生のルームメイト生活を描く、学園×ゴーストの異色ラブストーリー。"}, {"title": "奇蹟", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "医学を志す苦学生の高校生と、裏社会に生きる男が出会い、格差を越えて惹かれ合っていく、刑務所出所シーンから始まる愛の物語。"}, {"title": "You are mine", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "気難しいオレ様社長と、ポジティブな新人男性秘書が、日々の業務を通じて距離を縮めていくオフィスラブコメディ。"}, {"title": "AntiReset", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "何事にも興味を持てない冷淡な大学教授が、人間らしい感情を持つAIロボットとの出会いを通じて心を開いていくAIラブロマンス。"}, {"title": "僕らも知らない僕ら", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "両親を亡くした青年が拾った少年を弟として育てるうちに、家族の枠を超えた想いに直面していく、切なく深い絆を描いた作品。"}, {"title": "First Note of Love～美しい恋の奏で", "country": "台湾", "rating": 0, "watching": false, "movie": false, "synopsis": "兄を亡くしたショックで表舞台を離れた歌手が、作曲の才能を持つ大学生との出会いをきっかけに再び音楽と向き合っていく音楽ラブストーリー。"}, {"title": "Boys Lockdown", "country": "フィリピン", "rating": 1, "watching": false, "movie": false, "synopsis": "コロナ禍の寮でひとり過ごす大学生が、同じマスク柄をつけた青年とドラッグストアで出会い、ロックダウン下で距離を縮めていく。"}, {"title": "GAMEBOYS", "country": "フィリピン", "rating": 0, "watching": false, "movie": false, "synopsis": "パンデミックで外出できない中、オンラインゲームで負かした相手からの友達申請をきっかけに、画面越しに惹かれ合っていく二人を描いた作品。"}, {"title": "君がいるから～Your Home～", "country": "フィリピン", "rating": 0, "watching": false, "movie": false, "synopsis": "都会で孤独に暮らす人気モデルと、田舎で両親を亡くし暮らす青年が、偶然の一夜をきっかけに互いの居場所になっていく。"}, {"title": "Mr. Cinderella", "country": "ベトナム", "rating": 0, "watching": false, "movie": false, "synopsis": "幼い頃に離れた初恋の女の子を「シンデレラ」と呼び続けていた青年が、大人になって出会った医師が実はそのシンデレラ本人だったと知る、ベトナム発の人気BL。"}, {"title": "You Are Ma Boy", "country": "ベトナム", "rating": 0, "watching": false, "movie": false, "synopsis": "友人のためにサインをもらいに行ったカフェ店長と人気歌手が、ひょんなことから噂の的になり、次第に本物の関係へと発展していく。"}, {"title": "こんなにも君が好きで", "country": "ベトナム", "rating": 1, "watching": false, "movie": false, "synopsis": "パートナーを連れてベトナムに帰国した青年が、保守的な親族や母の病と向き合いながら本当の自分を伝えようとする、繊細な社会派ラブストーリー。"}, {"title": "双程", "country": "中国", "rating": 0, "watching": false, "movie": false, "synopsis": "内気な青年と激しい性格の御曹司が惹かれ合うも、家族や周囲の反対に引き裂かれていく、中国BLの伝説的作品と呼ばれる一作。"}, {"title": "不可抗力", "country": "中国", "rating": 0, "watching": false, "movie": false, "synopsis": "孤児院育ちの青年と、彼と共に育った御曹司。幼なじみから特別な関係へと変わっていく中、身分の差と周囲の反対に苦しめられる。"}, {"title": "Addicted （途中で終わってる…）", "country": "中国", "rating": 0, "watching": false, "movie": false, "synopsis": "配信停止で未完となった伝説の中国BL。不良少年と優等生、対照的な二人の関係が少しずつ変化していく学園ドラマ。"}, {"title": "Stay With Me", "country": "中国", "rating": 0, "watching": true, "movie": false, "synopsis": "親の再婚をきっかけに義理の兄弟となった優等生と問題児が、同じ屋根の下で暮らすうちにかけがえのない存在になっていく青春物語。"}, {"title": "YoungRoyals（スウェーデン）", "country": "欧米", "rating": 1, "watching": false, "movie": false, "synopsis": "スウェーデンの名門寄宿学校に転校してきた王子が、庶民出身のクラスメイトと惹かれ合っていく、身分と恋の間で揺れる青春ドラマ。"}, {"title": "YoungRoyals Season2（スウェーデン）", "country": "欧米", "rating": 0, "watching": false, "movie": false, "synopsis": "スウェーデンの寄宿学校を舞台にした王子と生徒の恋の続編。1期のその後の関係の揺れを描く。"}, {"title": "HEART STOPPER（イギリス）", "country": "欧米", "rating": 1, "watching": false, "movie": false, "synopsis": "内気な優等生と人気者のラグビー部員が、同じクラスの席替えをきっかけに友情から恋へと関係を育んでいく、優しい雰囲気のイギリス発ティーンドラマ。"}, {"title": "SKAM FRANCE Season3（フランス）", "country": "欧米", "rating": 1, "watching": false, "movie": false, "synopsis": "フランス版『SKAM』のシーズンの一つで、登場人物それぞれの視点から思春期の恋や葛藤を描くシリーズの一編。"}, {"title": "シングル・アゲイン（アメリカ）", "country": "欧米", "rating": 0, "watching": false, "movie": false, "synopsis": "17年連れ添ったパートナーに突然去られたニューヨークの不動産業者が、40代半ばで独身のゲイとして再び恋愛市場に踏み出していくコメディ。"}, {"title": "アレックス ストレンジラブ（アメリカ）", "country": "欧米", "rating": 0, "watching": false, "movie": true, "synopsis": "彼女と付き合う優等生の男子高校生が、パーティーで出会ったオープンリーゲイの同級生に惹かれ、自身のセクシュアリティに向き合っていく青春映画。"}, {"title": "マティアス＆マキシム（カナダ）", "country": "欧米", "rating": 0, "watching": false, "movie": true, "synopsis": "30歳の幼なじみ二人が、友人の自主制作映画でキスシーンを演じたことをきっかけに、それぞれ秘めていた想いに気づいていく。"}, {"title": "僕らをつなぐもの（イタリア）", "country": "欧米", "rating": 0, "watching": false, "movie": true, "synopsis": "子育ても順調だったイタリアのゲイカップルが、ある出来事をきっかけに関係の危機を迎える、ほろ苦さも交えたヒューマンドラマ。"}, {"title": "君の名前で僕を呼んで（イタリア）", "country": "欧米", "rating": 0, "watching": false, "movie": true, "synopsis": "1980年代のイタリアの避暑地を舞台に、教授の家に滞在する青年研究者と、その家の少年との間に芽生える一夏の恋を描いた作品。"}, {"title": "ボーイズ・イン・ザ・バンド（アメリカ）", "country": "欧米", "rating": 0, "watching": false, "movie": true, "synopsis": "1968年のニューヨークを舞台に、ゲイの男たちが集うバースデーパーティーの一夜を通して、それぞれの葛藤や関係性が浮かび上がる会話劇。"}, {"title": "ELITE", "country": "欧米", "rating": 0, "watching": false, "movie": false, "synopsis": "スペインの名門私立高校を舞台に、奨学金で入学した労働者階級の生徒たちと富裕層の生徒たちの間で起きる恋愛と対立、そして殺人事件を描く青春サスペンス。"}, {"title": "SEX EDUCATION", "country": "欧米", "rating": 0, "watching": false, "movie": false, "synopsis": "性の知識豊富な母を持つ高校生が、学校で「セックス相談所」を開くことになる、性と青春をテーマにしたイギリスの人気コメディドラマ。"}, {"title": "ぼくたちのチーム", "country": "欧米", "rating": 0, "watching": false, "movie": false, "synopsis": "ラグビー強豪の寄宿制男子校で、ゲイであることをからかわれていた生徒と転校してきたラグビーのスター選手が、音楽をきっかけに友情を育んでいく。"}, {"title": "赤と白とロイヤルブルー", "country": "欧米", "rating": 3, "watching": false, "movie": false, "synopsis": "アメリカ大統領の息子とイギリス王子が、政治的な因縁から生まれた対立を経て惹かれ合っていくラブストーリー。"}, {"title": "YoungRoyals Season2（スウェーデン）", "country": "欧米", "rating": 2, "watching": false, "movie": false, "synopsis": "スウェーデンの寄宿学校を舞台にした王子と生徒の恋の続編。1期のその後の関係の揺れを描く。"}]
+;
+
+const state = {
+  q: "",
+  country: "ALL",
+  rating: "ALL",
+  watching: false,
+};
+
+const countryOrder = ["日本","タイ","韓国","台湾","フィリピン","ベトナム","中国","欧米"];
+const FLAGS = {
+  "日本":"🇯🇵","タイ":"🇹🇭","韓国":"🇰🇷","台湾":"🇹🇼",
+  "フィリピン":"🇵🇭","ベトナム":"🇻🇳","中国":"🇨🇳","欧米":"🌍"
+};
+
+function starString(n){
+  if(n<=0) return "—";
+  return "★".repeat(n);
+}
+
+function computeCounts(){
+  const counts = {};
+  countryOrder.forEach(c => counts[c]=0);
+  DATA.forEach(d => counts[d.country] = (counts[d.country]||0)+1);
+  return counts;
+}
+
+function renderStats(){
+  const total = DATA.length;
+  const topRated = DATA.filter(d=>d.rating>=2).length;
+  const watching = DATA.filter(d=>d.watching).length;
+  document.getElementById('statRow').innerHTML = `
+    <div class="stat"><b>${total}</b>本 収録</div>
+    <div class="stat"><b>${countryOrder.length}</b>ヶ国・地域</div>
+    <div class="stat"><b>${topRated}</b>本が ★★以上</div>
+    <div class="stat"><b>${watching}</b>本 視聴中</div>
+  `;
+}
+
+function renderStamps(){
+  const counts = computeCounts();
+  const el = document.getElementById('stampRow');
+  let html = `<button class="stamp ${state.country==='ALL'?'active':''}" data-country="ALL">すべて <span class="n">${DATA.length}</span></button>`;
+  countryOrder.forEach(c=>{
+    html += `<button class="stamp ${state.country===c?'active':''}" data-country="${c}">${FLAGS[c]||''} ${c} <span class="n">${counts[c]}</span></button>`;
+  });
+  el.innerHTML = html;
+  el.querySelectorAll('.stamp').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.country = btn.dataset.country;
+      render();
+    });
+  });
+}
+
+function renderFilters(){
+  const el = document.getElementById('filterRow');
+  const ratingOptions = [
+    {key:'ALL', label:'評価すべて'},
+    {key:'2', label:'★★以上'},
+    {key:'1', label:'★1つ以上'},
+    {key:'0', label:'評価なし'},
+  ];
+  let html = ratingOptions.map(o=>`<button class="chip ${state.rating===o.key?'active':''}" data-rating="${o.key}">${o.label}</button>`).join('');
+  html += `<button class="chip ${state.watching?'active':''}" id="watchingChip">視聴中のみ</button>`;
+  html += `<span class="result-count" id="resultCount"></span>`;
+  el.innerHTML = html;
+  el.querySelectorAll('[data-rating]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.rating = btn.dataset.rating;
+      render();
+    });
+  });
+  document.getElementById('watchingChip').addEventListener('click', ()=>{
+    state.watching = !state.watching;
+    render();
+  });
+}
+
+function filteredData(){
+  return DATA.filter(d=>{
+    if(state.country!=='ALL' && d.country!==state.country) return false;
+    if(state.rating!=='ALL'){
+      if(state.rating==='2' && d.rating<2) return false;
+      if(state.rating==='1' && d.rating<1) return false;
+      if(state.rating==='0' && d.rating!==0) return false;
+    }
+    if(state.watching && !d.watching) return false;
+    if(state.q){
+      const q = state.q.toLowerCase();
+      if(!d.title.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function renderList(){
+  const data = filteredData();
+  const listBox = document.getElementById('listBox');
+  const emptyState = document.getElementById('emptyState');
+  const countEl = document.getElementById('resultCount');
+  if(countEl) countEl.textContent = `${data.length}件表示`;
+
+  if(data.length===0){
+    listBox.innerHTML = "";
+    emptyState.style.display = "block";
+    return;
+  }
+  emptyState.style.display = "none";
+
+  listBox.innerHTML = data.map(d=>{
+    const tags = [`<span class="tag country">${FLAGS[d.country]||''} ${d.country}</span>`];
+    if(d.watching) tags.push(`<span class="tag watching">視聴中</span>`);
+    if(d.movie) tags.push(`<span class="tag movie">映画</span>`);
+    const starClass = d.rating<=0 ? "row-stars empty" : "row-stars";
+    const synopsis = d.synopsis ? `<div class="row-synopsis">${escapeHtml(d.synopsis)}</div>` : "";
+    return `
+      <div class="row">
+        <div class="row-main">
+          <div class="row-title">${escapeHtml(d.title)}</div>
+          <div class="row-tags">${tags.join('')}</div>
+          ${synopsis}
+        </div>
+        <div class="${starClass}">${starString(d.rating)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function pickTonight(){
+  const pool = DATA.filter(d=>d.rating>=2);
+  const source = pool.length ? pool : DATA;
+  const item = source[Math.floor(Math.random()*source.length)];
+  document.getElementById('pickTitle').textContent = item.title;
+  document.getElementById('pickStars').textContent = starString(item.rating);
+  document.getElementById('pickCountry').textContent = (FLAGS[item.country]||'') + ' ' + item.country + (item.watching ? ' ・視聴中' : '');
+  document.getElementById('pickSynopsis').textContent = item.synopsis || '';
+}
+
+function render(){
+  renderStamps();
+  renderFilters();
+  renderList();
+}
+
+document.getElementById('searchInput').addEventListener('input', (e)=>{
+  state.q = e.target.value;
+  renderList();
+  const countEl = document.getElementById('resultCount');
+  if(countEl) countEl.textContent = `${filteredData().length}件表示`;
+});
+
+document.getElementById('shuffleBtn').addEventListener('click', pickTonight);
+
+renderStats();
+pickTonight();
+render();
+</script>
+</body>
+</html>
