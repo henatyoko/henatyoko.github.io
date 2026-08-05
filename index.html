@@ -35,7 +35,7 @@
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:920px;margin:0 auto;padding:48px 20px 80px;}
+  .wrap{max-width:460px;margin:0 auto;padding:48px 20px 80px;}
 
   /* ---------- HERO ---------- */
   .hero{margin-bottom:36px;}
@@ -328,30 +328,23 @@
     color:var(--text-dim);
     max-width:60ch;
   }
-  .comment-toggle{
-    margin-top:8px;
-    background:none;
-    border:none;
-    color:var(--text-faint);
-    font-size:12px;
-    font-family:'JetBrains Mono',monospace;
-    cursor:pointer;
-    padding:0;
-    display:flex;
-    align-items:center;
-    gap:5px;
-  }
-  .comment-toggle:hover{color:var(--accent);}
-  .comment-box{
-    margin-top:8px;
-    display:none;
+  .curator-comment{
+    margin-top:10px;
     max-width:60ch;
+    padding:10px 14px;
+    border-left:2px solid var(--accent);
+    background:rgba(255,168,122,0.06);
+    border-radius:0 8px 8px 0;
   }
-  .comment-box.open{display:block;}
-  .comment-box .giscus-loading{
-    font-size:12px;
-    color:var(--text-faint);
+  .curator-comment-label{
     font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 4px;
+  }
+  .curator-comment-text{
+    font-size:13px;
+    line-height:1.7;
+    color:var(--text-dim);
   }
   .row-stars{
     color:var(--gold);
@@ -586,63 +579,23 @@ function renderList(){
     if(d.movie) tags.push(`<span class="tag movie">映画</span>`);
     const starClass = d.rating<=0 ? "row-stars empty" : "row-stars";
     const synopsis = d.synopsis ? `<div class="row-synopsis">${escapeHtml(d.synopsis)}</div>` : "";
-    const rid = rowId(d.title);
+    const comment = d.comment ? `<div class="curator-comment"><p class="curator-comment-label">💬 henatyokoのコメント</p><p class="curator-comment-text">${escapeHtml(d.comment)}</p></div>` : "";
     return `
       <div class="row">
         <div class="row-main">
           <div class="row-title">${escapeHtml(d.title)}</div>
           <div class="row-tags">${tags.join('')}</div>
           ${synopsis}
-          <button class="comment-toggle" data-rid="${rid}" data-term="${escapeHtml(d.title)}">✎ コメント</button>
-          <div class="comment-box" id="cbox-${rid}"></div>
+          ${comment}
         </div>
         <div class="${starClass}">${starString(d.rating)}</div>
       </div>
     `;
   }).join('');
-
-  listBox.querySelectorAll('.comment-toggle').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const box = document.getElementById('cbox-'+btn.dataset.rid);
-      box.classList.toggle('open');
-      if(box.classList.contains('open') && !box.dataset.loaded){
-        box.dataset.loaded = "1";
-        loadGiscus(box, btn.dataset.term);
-      }
-    });
-  });
 }
 
 function escapeHtml(s){
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// ---------- Comments (GitHub Discussions via giscus, one thread per title) ----------
-function rowId(title){
-  let hash = 0;
-  for(let i=0;i<title.length;i++){ hash = ((hash<<5)-hash) + title.charCodeAt(i); hash |= 0; }
-  return 'r' + Math.abs(hash);
-}
-function loadGiscus(container, term){
-  container.innerHTML = '<div class="giscus-loading">コメント欄を読み込み中…</div>';
-  const script = document.createElement('script');
-  script.src = 'https://giscus.app/client.js';
-  script.setAttribute('data-repo', 'henatyoko/henatyoko.github.io');
-  script.setAttribute('data-repo-id', 'R_kgDOTtluBQ');
-  script.setAttribute('data-category', 'General');
-  script.setAttribute('data-category-id', 'DIC_kwDOTtluBc4DCrcs');
-  script.setAttribute('data-mapping', 'specific');
-  script.setAttribute('data-term', term);
-  script.setAttribute('data-strict', '0');
-  script.setAttribute('data-reactions-enabled', '1');
-  script.setAttribute('data-emit-metadata', '0');
-  script.setAttribute('data-input-position', 'bottom');
-  script.setAttribute('data-theme', 'dark_dimmed');
-  script.setAttribute('data-lang', 'ja');
-  script.crossOrigin = 'anonymous';
-  script.async = true;
-  script.onload = ()=>{ container.querySelector('.giscus-loading')?.remove(); };
-  container.appendChild(script);
 }
 
 let currentPick = null;
