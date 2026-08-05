@@ -75,29 +75,88 @@
   /* ---------- TONIGHT'S PICK ---------- */
   .pick{
     margin:30px 0 40px;
-    border:1px solid rgba(255,139,94,0.35);
-    background:linear-gradient(135deg, rgba(255,139,94,0.14), rgba(255,209,102,0.05));
-    border-radius:18px;
-    padding:22px 24px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:16px;
-    flex-wrap:wrap;
   }
   .pick-label{
     font-family:'JetBrains Mono',monospace;
     font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--accent);margin:0 0 8px;
+    color:var(--accent);margin:0 0 12px;
   }
-  .pick-title{
+
+  /* shareable result card */
+  .pick-card{
+    position:relative;
+    overflow:hidden;
+    max-width:420px;
+    margin:0 auto;
+    border-radius:20px;
+    border:1px solid rgba(255,168,122,0.35);
+    background:
+      radial-gradient(420px 220px at 105% -15%, rgba(255,168,122,0.22), transparent 60%),
+      radial-gradient(320px 220px at -10% 115%, rgba(255,209,102,0.14), transparent 60%),
+      linear-gradient(160deg, var(--bg-deep), var(--surface) 65%);
+    padding:26px 24px 20px;
+    box-shadow:0 20px 45px rgba(0,0,0,0.35);
+  }
+  .pick-card-top{
+    display:flex;align-items:center;gap:8px;
+    margin-bottom:16px;
+  }
+  .pick-card-flag{font-size:20px;line-height:1;}
+  .pick-card-country{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:.08em;
+    color:var(--text-dim);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:4px 12px;
+    background:rgba(255,255,255,0.04);
+  }
+  .pick-card-title{
+    font-family:'Shippori Mincho',serif;
+    font-weight:800;
+    font-size:23px;
+    line-height:1.45;
+    margin:0 0 10px;
+    overflow-wrap:anywhere;
+  }
+  .pick-card-stars{
+    color:var(--gold);
+    letter-spacing:3px;
+    font-size:17px;
+    margin:0 0 14px;
+  }
+  .pick-card-synopsis{
+    color:var(--text-dim);
+    font-size:13.5px;
+    line-height:1.75;
+    margin:0 0 20px;
+  }
+  .pick-card-footer{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .pick-card-brand{
     font-family:'Shippori Mincho',serif;
     font-weight:700;
-    font-size:22px;
-    margin:0 0 4px;
+    font-size:13px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:5px;
+    white-space:nowrap;
   }
-  .pick-meta{color:var(--text-dim);font-size:13px;}
-  .pick-stars{color:var(--gold);letter-spacing:2px;font-size:15px;}
+  .pick-card-url{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:var(--text-faint);
+    letter-spacing:.02em;
+  }
+
+  /* action buttons under the card */
+  .pick-actions{
+    display:flex;gap:10px;flex-wrap:wrap;
+    justify-content:center;
+    margin-top:20px;
+  }
   .shuffle-btn{
     background:var(--accent);
     color:#1A1230;
@@ -113,6 +172,33 @@
   }
   .shuffle-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(255,139,94,0.35);}
   .shuffle-btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+  .pick-action-btn{
+    background:transparent;
+    color:var(--text-dim);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:11px 20px;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+    transition:all .15s ease;
+    white-space:nowrap;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .pick-action-btn:hover{border-color:var(--accent);color:var(--text);}
+  .pick-action-btn:disabled{opacity:.55;cursor:default;}
+  .pick-action-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .pick-action-btn.share-btn:hover{border-color:#4FA8E0;}
+
+  @media (max-width:480px){
+    .pick-card{padding:22px 18px 16px;border-radius:16px;}
+    .pick-card-title{font-size:20px;}
+    .pick-actions{flex-direction:column;}
+    .pick-actions .shuffle-btn,
+    .pick-actions .pick-action-btn{width:100%;justify-content:center;}
+  }
 
   /* ---------- CONTROLS ---------- */
   .controls{
@@ -334,13 +420,27 @@
   </div>
 
   <div class="pick" id="pickBox">
-    <div>
-      <p class="pick-label">🔮 今日のみくじ</p>
-      <p class="pick-title" id="pickTitle">-</p>
-      <p class="pick-meta"><span class="row-stars" id="pickStars" style="font-size:13px;"></span> <span id="pickCountry"></span></p>
-      <p class="row-synopsis" id="pickSynopsis" style="margin-top:8px;"></p>
+    <p class="pick-label">🔮 今日のみくじ</p>
+
+    <div class="pick-card" id="pickCard">
+      <div class="pick-card-top">
+        <span class="pick-card-flag" id="pickCardFlag"></span>
+        <span class="pick-card-country" id="pickCardCountry"></span>
+      </div>
+      <p class="pick-card-title" id="pickTitle">-</p>
+      <p class="pick-card-stars" id="pickStars"></p>
+      <p class="pick-card-synopsis" id="pickSynopsis"></p>
+      <div class="pick-card-footer">
+        <span class="pick-card-brand">🔮 BLみくじ</span>
+        <span class="pick-card-url">henatyoko.github.io</span>
+      </div>
     </div>
-    <button class="shuffle-btn" id="shuffleBtn">もう一度引く</button>
+
+    <div class="pick-actions">
+      <button class="shuffle-btn" id="shuffleBtn">もう一度引く</button>
+      <button class="pick-action-btn save-btn" id="saveImageBtn">📷 画像として保存</button>
+      <button class="pick-action-btn share-btn" id="shareXBtn">𝕏 でシェア</button>
+    </div>
   </div>
 
   <div class="controls">
@@ -570,14 +670,94 @@ function saveComment(title, text){
   }catch(e){}
 }
 
+let currentPick = null;
+
 function pickTonight(){
   const pool = DATA.filter(d=>d.rating>=2);
   const source = pool.length ? pool : DATA;
   const item = source[Math.floor(Math.random()*source.length)];
+  currentPick = item;
   document.getElementById('pickTitle').textContent = item.title;
   document.getElementById('pickStars').textContent = starString(item.rating);
-  document.getElementById('pickCountry').textContent = (FLAGS[item.country]||'') + ' ' + item.country;
+  document.getElementById('pickCardFlag').textContent = FLAGS[item.country] || '🌏';
+  document.getElementById('pickCardCountry').textContent = item.country;
   document.getElementById('pickSynopsis').textContent = item.synopsis || '';
+}
+
+const HASHTAGS_BY_COUNTRY = {
+  "日本":"#日本BL",
+  "タイ":"#タイBL",
+  "韓国":"#韓国BL",
+  "台湾":"#台湾BL",
+  "フィリピン":"#フィリピンBL",
+  "ベトナム":"#ベトナムBL",
+  "中国":"#中国BL",
+  "欧米":"#欧米BL"
+};
+
+let html2canvasPromise = null;
+function loadHtml2Canvas(){
+  if(window.html2canvas) return Promise.resolve(window.html2canvas);
+  if(html2canvasPromise) return html2canvasPromise;
+  html2canvasPromise = new Promise((resolve, reject)=>{
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    script.onload = ()=>resolve(window.html2canvas);
+    script.onerror = ()=>reject(new Error('html2canvas failed to load'));
+    document.head.appendChild(script);
+  });
+  return html2canvasPromise;
+}
+
+async function handleSaveImage(){
+  const btn = document.getElementById('saveImageBtn');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '生成中…';
+  try{
+    const html2canvas = await loadHtml2Canvas();
+    const card = document.getElementById('pickCard');
+    const canvas = await html2canvas(card, {
+      backgroundColor: null,
+      scale: Math.min(3, (window.devicePixelRatio||1) * 2),
+      useCORS: true,
+    });
+    await new Promise((resolve)=>{
+      canvas.toBlob(async (blob)=>{
+        if(!blob){ resolve(); return; }
+        const file = new File([blob], 'bl-mikuji-pick.png', { type: 'image/png' });
+        if(navigator.canShare && navigator.canShare({ files: [file] })){
+          try{
+            await navigator.share({ files: [file], title: 'BLみくじ', text: currentPick ? `今日のみくじ「${currentPick.title}」` : 'BLみくじ' });
+            resolve();
+            return;
+          }catch(e){ /* share cancelled or unavailable, fall back to download */ }
+        }
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'bl-mikuji-pick.png';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(()=>URL.revokeObjectURL(url), 3000);
+        resolve();
+      }, 'image/png');
+    });
+  }catch(e){
+    alert('画像の生成に失敗しました。通信環境を確認して、もう一度お試しください。');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+}
+
+function shareToX(){
+  if(!currentPick) return;
+  const tags = ['#BLみくじ', '#今日のBLみくじ', HASHTAGS_BY_COUNTRY[currentPick.country]].filter(Boolean);
+  const text = `🔮 今日のみくじは「${currentPick.title}」でした ${starString(currentPick.rating)}\n\n${tags.join(' ')}`;
+  const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 function render(){
@@ -594,6 +774,8 @@ document.getElementById('searchInput').addEventListener('input', (e)=>{
 });
 
 document.getElementById('shuffleBtn').addEventListener('click', pickTonight);
+document.getElementById('saveImageBtn').addEventListener('click', handleSaveImage);
+document.getElementById('shareXBtn').addEventListener('click', shareToX);
 
 renderStats();
 pickTonight();
