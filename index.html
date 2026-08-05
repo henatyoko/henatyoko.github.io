@@ -237,31 +237,16 @@
     gap:5px;
   }
   .comment-toggle:hover{color:var(--accent);}
-  .comment-toggle.has-comment{color:var(--gold);}
   .comment-box{
     margin-top:8px;
     display:none;
+    max-width:60ch;
   }
   .comment-box.open{display:block;}
-  .comment-box textarea{
-    width:100%;
-    min-height:56px;
-    background:var(--surface-hi);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:8px 10px;
-    color:var(--text);
-    font-family:'Zen Kaku Gothic New',sans-serif;
-    font-size:13px;
-    line-height:1.6;
-    resize:vertical;
-  }
-  .comment-box textarea::placeholder{color:var(--text-faint);}
-  .comment-saved{
-    font-size:11px;
+  .comment-box .giscus-loading{
+    font-size:12px;
     color:var(--text-faint);
     font-family:'JetBrains Mono',monospace;
-    margin-top:4px;
   }
   .row-stars{
     color:var(--gold);
@@ -478,9 +463,6 @@ function renderList(){
     if(d.movie) tags.push(`<span class="tag movie">映画</span>`);
     const starClass = d.rating<=0 ? "row-stars empty" : "row-stars";
     const synopsis = d.synopsis ? `<div class="row-synopsis">${escapeHtml(d.synopsis)}</div>` : "";
-    const cmt = getComment(d.title);
-    const cmtBtnClass = cmt ? "comment-toggle has-comment" : "comment-toggle";
-    const cmtBtnLabel = cmt ? "✎ コメントあり（編集する）" : "✎ コメントを書く";
     const rid = rowId(d.title);
     return `
       <div class="row">
@@ -488,11 +470,8 @@ function renderList(){
           <div class="row-title">${escapeHtml(d.title)}</div>
           <div class="row-tags">${tags.join('')}</div>
           ${synopsis}
-          <button class="${cmtBtnClass}" data-rid="${rid}">${cmtBtnLabel}</button>
-          <div class="comment-box" id="cbox-${rid}">
-            <textarea id="ctext-${rid}" placeholder="推しポイント、感想、次に見たい理由など自由にどうぞ…">${escapeHtml(cmt)}</textarea>
-            <div class="comment-saved" id="csaved-${rid}"></div>
-          </div>
+          <button class="comment-toggle" data-rid="${rid}" data-term="${escapeHtml(d.title)}">✎ コメント</button>
+          <div class="comment-box" id="cbox-${rid}"></div>
         </div>
         <div class="${starClass}">${starString(d.rating)}</div>
       </div>
@@ -503,36 +482,10 @@ function renderList(){
     btn.addEventListener('click', ()=>{
       const box = document.getElementById('cbox-'+btn.dataset.rid);
       box.classList.toggle('open');
-      if(box.classList.contains('open')){
-        const ta = document.getElementById('ctext-'+btn.dataset.rid);
-        ta.focus();
+      if(box.classList.contains('open') && !box.dataset.loaded){
+        box.dataset.loaded = "1";
+        loadGiscus(box, btn.dataset.term);
       }
-    });
-  });
-  listBox.querySelectorAll('.comment-box textarea').forEach(ta=>{
-    let timer = null;
-    ta.addEventListener('input', ()=>{
-      const rid = ta.id.replace('ctext-','');
-      clearTimeout(timer);
-      timer = setTimeout(()=>{
-        const title = ridToTitle[rid];
-        saveComment(title, ta.value);
-        const saved = document.getElementById('csaved-'+rid);
-        if(saved){
-          saved.textContent = '保存しました';
-          setTimeout(()=>{ if(saved) saved.textContent=''; }, 1500);
-        }
-        const btn = listBox.querySelector(`.comment-toggle[data-rid="${rid}"]`);
-        if(btn){
-          if(ta.value.trim()){
-            btn.classList.add('has-comment');
-            btn.textContent = '✎ コメントあり（編集する）';
-          } else {
-            btn.classList.remove('has-comment');
-            btn.textContent = '✎ コメントを書く';
-          }
-        }
-      }, 500);
     });
   });
 }
@@ -541,33 +494,32 @@ function escapeHtml(s){
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ---------- Comments (saved locally in your browser) ----------
-let COMMENTS = {};
-try{
-  const raw = localStorage.getItem('bl-miku-comments');
-  if(raw) COMMENTS = JSON.parse(raw);
-}catch(e){ COMMENTS = {}; }
-
-const ridToTitle = {};
+// ---------- Comments (GitHub Discussions via giscus, one thread per title) ----------
 function rowId(title){
   let hash = 0;
   for(let i=0;i<title.length;i++){ hash = ((hash<<5)-hash) + title.charCodeAt(i); hash |= 0; }
-  const rid = 'r' + Math.abs(hash);
-  ridToTitle[rid] = title;
-  return rid;
+  return 'r' + Math.abs(hash);
 }
-function getComment(title){
-  return COMMENTS[title] || '';
-}
-function saveComment(title, text){
-  if(text && text.trim()){
-    COMMENTS[title] = text;
-  } else {
-    delete COMMENTS[title];
-  }
-  try{
-    localStorage.setItem('bl-miku-comments', JSON.stringify(COMMENTS));
-  }catch(e){}
+function loadGiscus(container, term){
+  container.innerHTML = '<div class="giscus-loading">コメント欄を読み込み中…</div>';
+  const script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', 'henatyoko/henatyoko.github.io');
+  script.setAttribute('data-repo-id', 'R_kgDOTtluBQ');
+  script.setAttribute('data-category', 'General');
+  script.setAttribute('data-category-id', 'DIC_kwDOTtluBc4DCrcs');
+  script.setAttribute('data-mapping', 'specific');
+  script.setAttribute('data-term', term);
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'bottom');
+  script.setAttribute('data-theme', 'dark_dimmed');
+  script.setAttribute('data-lang', 'ja');
+  script.crossOrigin = 'anonymous';
+  script.async = true;
+  script.onload = ()=>{ container.querySelector('.giscus-loading')?.remove(); };
+  container.appendChild(script);
 }
 
 function pickTonight(){
