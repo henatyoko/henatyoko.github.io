@@ -83,11 +83,17 @@
   }
 
   /* shareable result card */
+  /* #pickCard is the html2canvas capture target: it reserves extra room
+     top/left so the tilted flag sticker can bleed past the card's edge
+     and still be included in the saved image. */
   .pick-card{
-    position:relative;
-    overflow:hidden;
     max-width:420px;
     margin:0 auto;
+    padding:30px 14px 14px 26px;
+  }
+  .pick-card-surface{
+    position:relative;
+    max-width:100%;
     border-radius:20px;
     border:1px solid rgba(255,168,122,0.35);
     background:
@@ -97,11 +103,21 @@
     padding:26px 24px 20px;
     box-shadow:0 20px 45px rgba(0,0,0,0.35);
   }
+  .pick-card-flag{
+    position:absolute;
+    top:-20px;
+    left:-22px;
+    font-size:56px;
+    line-height:1;
+    transform:rotate(-17deg);
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,0.45));
+    z-index:2;
+    pointer-events:none;
+  }
   .pick-card-top{
-    display:flex;align-items:center;gap:8px;
+    display:flex;align-items:center;justify-content:flex-end;
     margin-bottom:16px;
   }
-  .pick-card-flag{font-size:20px;line-height:1;}
   .pick-card-country{
     font-family:'JetBrains Mono',monospace;
     font-size:12px;letter-spacing:.08em;
@@ -193,7 +209,9 @@
   .pick-action-btn.share-btn:hover{border-color:#4FA8E0;}
 
   @media (max-width:480px){
-    .pick-card{padding:22px 18px 16px;border-radius:16px;}
+    .pick-card{padding:26px 10px 10px 20px;}
+    .pick-card-surface{padding:22px 18px 16px;border-radius:16px;}
+    .pick-card-flag{font-size:46px;top:-16px;left:-18px;}
     .pick-card-title{font-size:20px;}
     .pick-actions{flex-direction:column;}
     .pick-actions .shuffle-btn,
@@ -423,16 +441,18 @@
     <p class="pick-label">🔮 今日のみくじ</p>
 
     <div class="pick-card" id="pickCard">
-      <div class="pick-card-top">
+      <div class="pick-card-surface">
         <span class="pick-card-flag" id="pickCardFlag"></span>
-        <span class="pick-card-country" id="pickCardCountry"></span>
-      </div>
-      <p class="pick-card-title" id="pickTitle">-</p>
-      <p class="pick-card-stars" id="pickStars"></p>
-      <p class="pick-card-synopsis" id="pickSynopsis"></p>
-      <div class="pick-card-footer">
-        <span class="pick-card-brand">🔮 BLみくじ</span>
-        <span class="pick-card-url">henatyoko.github.io</span>
+        <div class="pick-card-top">
+          <span class="pick-card-country" id="pickCardCountry"></span>
+        </div>
+        <p class="pick-card-title" id="pickTitle">-</p>
+        <p class="pick-card-stars" id="pickStars"></p>
+        <p class="pick-card-synopsis" id="pickSynopsis"></p>
+        <div class="pick-card-footer">
+          <span class="pick-card-brand">🔮 BLみくじ</span>
+          <span class="pick-card-url">henatyoko.github.io</span>
+        </div>
       </div>
     </div>
 
