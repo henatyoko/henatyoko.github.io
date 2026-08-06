@@ -583,6 +583,7 @@ function renderStats(){
   const total = DATA.length;
   const topRated = DATA.filter(d=>d.rating>=2).length;
   document.getElementById('titleCount').textContent = total;
+  document.title = `${total}日 BLみくじ`;
   document.getElementById('siteFooter').textContent = `henatyoko's BL archive — ${total} titles · 8 countries`;
   document.getElementById('statRow').innerHTML = `
     <div class="stat"><b>${total}</b>本 収録</div>
