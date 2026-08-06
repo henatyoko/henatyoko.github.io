@@ -740,7 +740,7 @@ function renderList(){
     const starClass = d.rating<=0 ? "row-stars empty" : "row-stars";
     const synopsis = d.synopsis ? `<div class="row-synopsis">${escapeHtml(d.synopsis)}</div>` : "";
     const comment = d.comment ? `<div class="curator-comment"><p class="curator-comment-label">💬 henatyokoのコメント</p><p class="curator-comment-text">${escapeHtml(d.comment)}</p></div>` : "";
-    const watchLink = d.amazon
+    const watchLink = hasPreciseAmazonLink(d)
       ? `<a class="link-btn" href="${d.amazon}" target="_blank" rel="nofollow sponsored noopener">🔗 作品を見る</a>`
       : `<span class="link-btn link-btn-disabled" aria-disabled="true">🔗 作品を見る</span>`;
     return `
@@ -816,7 +816,7 @@ function pickTonight(){
     document.getElementById('pickCardCountry').textContent = item.country;
     document.getElementById('pickSynopsis').textContent = item.synopsis || '';
     const linkBtn = document.getElementById('pickLinkBtn');
-    if(item.amazon){
+    if(hasPreciseAmazonLink(item)){
       linkBtn.href = item.amazon;
       linkBtn.classList.remove('link-btn-disabled');
       linkBtn.removeAttribute('aria-disabled');
