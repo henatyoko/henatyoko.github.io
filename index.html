@@ -103,21 +103,26 @@
       linear-gradient(160deg, var(--bg-deep), var(--surface) 65%);
     padding:26px 24px 20px;
     box-shadow:0 20px 45px rgba(0,0,0,0.35);
-    transition:opacity .2s ease, transform .2s ease;
   }
   .pick-card-surface.drawing{
-    opacity:.3;
-    transform:scale(.95) rotate(-1deg);
+    animation:shakeBox .26s ease-in-out;
+  }
+  @keyframes shakeBox{
+    0%{opacity:1; transform:translateX(0) scale(1);}
+    25%{opacity:.85; transform:translateX(-3px) scale(.99);}
+    50%{opacity:.6; transform:translateX(3px) scale(.97);}
+    75%{opacity:.4; transform:translateX(-2px) scale(.95);}
+    100%{opacity:.3; transform:translateX(0) scale(.93);}
   }
   .pick-card-surface.revealing{
-    animation:pickReveal 1.15s cubic-bezier(.34,1.56,.64,1);
-    transform-origin:50% 60%;
+    animation:pickReveal .9s cubic-bezier(.34,1.56,.64,1);
+    transform-origin:50% 100%;
   }
   @keyframes pickReveal{
-    0%{opacity:0; transform:scale(.12) rotate(-95deg); animation-timing-function:cubic-bezier(.6,.04,.9,.32);}
-    55%{opacity:1; transform:scale(1.2) rotate(16deg); animation-timing-function:cubic-bezier(.34,1.56,.64,1);}
-    78%{transform:scale(.9) rotate(-6deg);}
-    100%{opacity:1; transform:scale(1) rotate(0deg);}
+    0%{opacity:0; transform:translateY(60px) scale(.7); animation-timing-function:cubic-bezier(.6,.04,.9,.32);}
+    58%{opacity:1; transform:translateY(-10px) scale(1.05); animation-timing-function:cubic-bezier(.34,1.56,.64,1);}
+    80%{transform:translateY(4px) scale(.98);}
+    100%{opacity:1; transform:translateY(0) scale(1);}
   }
   .pick-card-flag{
     position:absolute;
@@ -618,7 +623,13 @@ let currentPick = null;
 
 function pickTonight(){
   const surface = document.querySelector('#pickCard .pick-card-surface');
-  if(surface) surface.classList.add('drawing');
+  if(surface){
+    clearTimeout(surface._revealTimer);
+    surface.classList.remove('revealing');
+    surface.classList.remove('drawing');
+    void surface.offsetWidth;
+    surface.classList.add('drawing');
+  }
   setTimeout(()=>{
     const pool = DATA.filter(d=>d.rating>=2);
     const source = pool.length ? pool : DATA;
@@ -635,7 +646,7 @@ function pickTonight(){
       void surface.offsetWidth;
       surface.classList.add('revealing');
       clearTimeout(surface._revealTimer);
-      surface._revealTimer = setTimeout(()=> surface.classList.remove('revealing'), 1200);
+      surface._revealTimer = setTimeout(()=> surface.classList.remove('revealing'), 950);
     }
   }, 260);
 }
