@@ -815,42 +815,41 @@ function loadHtml2Canvas(){
   return html2canvasPromise;
 }
 
+async function generatePickCardBlob(){
+  const html2canvas = await loadHtml2Canvas();
+  const card = document.getElementById('pickCard');
+  const canvas = await html2canvas(card, {
+    backgroundColor: null,
+    scale: Math.min(3, (window.devicePixelRatio||1) * 2),
+    useCORS: true,
+    ignoreElements: (el) => el.id === 'pickLinkBtn',
+  });
+  return new Promise((resolve)=> canvas.toBlob(resolve, 'image/png'));
+}
+
 async function handleSaveImage(){
   const btn = document.getElementById('saveImageBtn');
   const original = btn.textContent;
   btn.disabled = true;
   btn.textContent = '生成中…';
   try{
-    const html2canvas = await loadHtml2Canvas();
-    const card = document.getElementById('pickCard');
-    const canvas = await html2canvas(card, {
-      backgroundColor: null,
-      scale: Math.min(3, (window.devicePixelRatio||1) * 2),
-      useCORS: true,
-      ignoreElements: (el) => el.id === 'pickLinkBtn',
-    });
-    await new Promise((resolve)=>{
-      canvas.toBlob(async (blob)=>{
-        if(!blob){ resolve(); return; }
-        const file = new File([blob], 'bl-mikuji-pick.png', { type: 'image/png' });
-        if(navigator.canShare && navigator.canShare({ files: [file] })){
-          try{
-            await navigator.share({ files: [file], title: 'BLみくじ', text: currentPick ? `今日のみくじ「${currentPick.title}」` : 'BLみくじ' });
-            resolve();
-            return;
-          }catch(e){ /* share cancelled or unavailable, fall back to download */ }
-        }
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'bl-mikuji-pick.png';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setTimeout(()=>URL.revokeObjectURL(url), 3000);
-        resolve();
-      }, 'image/png');
-    });
+    const blob = await generatePickCardBlob();
+    if(!blob) return;
+    const file = new File([blob], 'bl-mikuji-pick.png', { type: 'image/png' });
+    if(navigator.canShare && navigator.canShare({ files: [file] })){
+      try{
+        await navigator.share({ files: [file], title: 'BLみくじ', text: currentPick ? `今日のみくじ「${currentPick.title}」` : 'BLみくじ' });
+        return;
+      }catch(e){ /* share cancelled or unavailable, fall back to download */ }
+    }
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'bl-mikuji-pick.png';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 3000);
   }catch(e){
     alert('画像の生成に失敗しました。通信環境を確認して、もう一度お試しください。');
   }finally{
@@ -859,11 +858,39 @@ async function handleSaveImage(){
   }
 }
 
-function shareToX(){
+async function shareToX(){
   if(!currentPick) return;
-  const tags = ['#BLみくじ', '#今日のBLみくじ', HASHTAGS_BY_COUNTRY[currentPick.country]].filter(Boolean);
+  const tags = [
+    '#BLみくじ', '#今日のBLみくじ', '#BL', '#ボーイズラブ', '#BLドラマ',
+    '#BL好きな人と繋がりたい',
+    HASHTAGS_BY_COUNTRY[currentPick.country],
+    currentPick.movie ? '#BL映画' : null,
+  ].filter(Boolean);
   const text = `🔮 今日のみくじは「${currentPick.title}」でした ${starString(currentPick.rating)}\n\n${tags.join(' ')}`;
-  const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+  const siteUrl = 'https://henatyoko.com/';
+  const btn = document.getElementById('shareXBtn');
+  const original = btn.textContent;
+
+  try{
+    btn.disabled = true;
+    btn.textContent = '準備中…';
+    const blob = await generatePickCardBlob();
+    if(blob){
+      const file = new File([blob], 'bl-mikuji-pick.png', { type: 'image/png' });
+      if(navigator.canShare && navigator.canShare({ files: [file] })){
+        try{
+          await navigator.share({ files: [file], title: 'BLみくじ', text: `${text}\n\n${siteUrl}` });
+          return;
+        }catch(e){ /* share cancelled or unavailable, fall back to X intent */ }
+      }
+    }
+  }catch(e){ /* image generation failed, fall back to X intent */ }
+  finally{
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+
+  const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(siteUrl);
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 
