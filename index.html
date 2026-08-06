@@ -412,13 +412,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     white-space:nowrap;
   }
   .link-btn:hover{border-color:var(--accent);color:var(--text);}
-  .link-btn-disabled{
-    opacity:.4;
-    color:var(--text-faint);
-    pointer-events:none;
-    cursor:default;
-  }
-  .link-btn-disabled:hover{border-color:var(--line);color:var(--text-faint);}
   #pickLinkBtn{
     display:flex;
     width:fit-content;
@@ -742,7 +735,7 @@ function renderList(){
     const comment = d.comment ? `<div class="curator-comment"><p class="curator-comment-label">💬 henatyokoのコメント</p><p class="curator-comment-text">${escapeHtml(d.comment)}</p></div>` : "";
     const watchLink = hasPreciseAmazonLink(d)
       ? `<a class="link-btn" href="${d.amazon}" target="_blank" rel="nofollow sponsored noopener">🔗 作品を見る</a>`
-      : `<span class="link-btn link-btn-disabled" aria-disabled="true">🔗 作品を見る</span>`;
+      : "";
     return `
       <div class="row">
         <div class="row-main">
@@ -818,12 +811,10 @@ function pickTonight(){
     const linkBtn = document.getElementById('pickLinkBtn');
     if(hasPreciseAmazonLink(item)){
       linkBtn.href = item.amazon;
-      linkBtn.classList.remove('link-btn-disabled');
-      linkBtn.removeAttribute('aria-disabled');
+      linkBtn.style.display = '';
     } else {
       linkBtn.removeAttribute('href');
-      linkBtn.classList.add('link-btn-disabled');
-      linkBtn.setAttribute('aria-disabled', 'true');
+      linkBtn.style.display = 'none';
     }
     if(surface){
       surface.classList.remove('drawing');
