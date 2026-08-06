@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#14162B"/>
+  <path d="M12,30 L52,30 L52,51 Q52,54 49,54 L15,54 Q12,54 12,51 Z" fill="#FFA87A"/>
+  <path d="M51,30 L13,30 Q10,30 12.12,27.88 L17.88,22.12 Q20,20 23,20 L41,20 Q44,20 46.12,22.12 L51.88,27.88 Q54,30 51,30 Z" fill="#FFA87A"/>
+  <rect x="28" y="8" width="8" height="16" rx="2.5" fill="#FFD166"/>
+  <text x="32" y="49" font-family="'Arial Black', Arial, sans-serif" font-weight="900"
+        font-size="18" fill="#1A1230" text-anchor="middle" letter-spacing="-1">BL</text>
+</svg>
