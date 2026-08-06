@@ -47,7 +47,7 @@
   h1{
     font-family:'Shippori Mincho',serif;
     font-weight:800;
-    font-size:clamp(34px,6vw,54px);
+    font-size:clamp(24px,8vw,36px);
     line-height:1.25;
     margin:0 0 14px;
     letter-spacing:.02em;
@@ -102,6 +102,19 @@
       linear-gradient(160deg, var(--bg-deep), var(--surface) 65%);
     padding:26px 24px 20px;
     box-shadow:0 20px 45px rgba(0,0,0,0.35);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .pick-card-surface.drawing{
+    opacity:.3;
+    transform:scale(.95) rotate(-1deg);
+  }
+  .pick-card-surface.revealing{
+    animation:pickReveal .55s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes pickReveal{
+    0%{opacity:0; transform:scale(.9) rotate(-3deg) translateY(8px);}
+    55%{opacity:1; transform:scale(1.03) rotate(1deg) translateY(-3px);}
+    100%{opacity:1; transform:scale(1) rotate(0) translateY(0);}
   }
   .pick-card-flag{
     position:absolute;
@@ -601,15 +614,27 @@ function escapeHtml(s){
 let currentPick = null;
 
 function pickTonight(){
-  const pool = DATA.filter(d=>d.rating>=2);
-  const source = pool.length ? pool : DATA;
-  const item = source[Math.floor(Math.random()*source.length)];
-  currentPick = item;
-  document.getElementById('pickTitle').textContent = item.title;
-  document.getElementById('pickStars').textContent = starString(item.rating);
-  document.getElementById('pickCardFlag').textContent = FLAGS[item.country] || '🌏';
-  document.getElementById('pickCardCountry').textContent = item.country;
-  document.getElementById('pickSynopsis').textContent = item.synopsis || '';
+  const surface = document.querySelector('#pickCard .pick-card-surface');
+  if(surface) surface.classList.add('drawing');
+  setTimeout(()=>{
+    const pool = DATA.filter(d=>d.rating>=2);
+    const source = pool.length ? pool : DATA;
+    const item = source[Math.floor(Math.random()*source.length)];
+    currentPick = item;
+    document.getElementById('pickTitle').textContent = item.title;
+    document.getElementById('pickStars').textContent = starString(item.rating);
+    document.getElementById('pickCardFlag').textContent = FLAGS[item.country] || '🌏';
+    document.getElementById('pickCardCountry').textContent = item.country;
+    document.getElementById('pickSynopsis').textContent = item.synopsis || '';
+    if(surface){
+      surface.classList.remove('drawing');
+      surface.classList.remove('revealing');
+      void surface.offsetWidth;
+      surface.classList.add('revealing');
+      clearTimeout(surface._revealTimer);
+      surface._revealTimer = setTimeout(()=> surface.classList.remove('revealing'), 600);
+    }
+  }, 260);
 }
 
 const HASHTAGS_BY_COUNTRY = {
