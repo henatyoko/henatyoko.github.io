@@ -908,7 +908,8 @@ async function shareToX(){
   if(!currentPick) return;
   const tags = [
     '#BLみくじ', '#今日のBLみくじ', '#BL', '#ボーイズラブ', '#BLドラマ',
-    '#BL好きな人と繋がりたい',
+    '#BL好きな人と繋がりたい', '#腐女子', '#沼落ち', '#尊い',
+    currentPick.country === '日本' ? '#国内BLドラマ' : '#海外BLドラマ',
     HASHTAGS_BY_COUNTRY[currentPick.country],
     currentPick.movie ? '#BL映画' : null,
   ].filter(Boolean);
@@ -916,11 +917,12 @@ async function shareToX(){
   const siteUrl = 'https://henatyoko.com/';
   const btn = document.getElementById('shareXBtn');
   const original = btn.textContent;
+  let blob = null;
 
   try{
     btn.disabled = true;
     btn.textContent = '準備中…';
-    const blob = await generatePickCardBlob();
+    blob = await generatePickCardBlob();
     if(blob){
       const file = new File([blob], 'bl-mikuji-pick.png', { type: 'image/png' });
       if(navigator.canShare && navigator.canShare({ files: [file] })){
@@ -934,6 +936,18 @@ async function shareToX(){
   finally{
     btn.disabled = false;
     btn.textContent = original;
+  }
+
+  if(blob){
+    const dlUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = dlUrl;
+    link.download = 'bl-mikuji-pick.png';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(()=>URL.revokeObjectURL(dlUrl), 3000);
+    alert('カード画像をダウンロードしました。この後開くXの投稿画面に、画像を添付してください。');
   }
 
   const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(siteUrl);
