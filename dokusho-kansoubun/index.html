@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本のしおり | 読書感想文の書きやすさガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #eef2e8;
+    --paper-card: #f7f9f3;
+    --ink: #1f2e21;
+    --ink-soft: #4a5c4c;
+    --forest: #2c4a34;
+    --forest-deep: #1b3222;
+    --mustard: #c98a2b;
+    --mustard-soft: #e8c98a;
+    --clay: #b5583f;
+    --line: #c9d2c0;
+    --shadow: rgba(31, 46, 33, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0) 300px);
+  }
+
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 100px;
+  }
+
+  header.hero {
+    padding: 56px 0 36px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    text-align: left;
+  }
+
+  .hero-illustration {
+    flex-shrink: 0;
+    width: 220px;
+  }
+
+  .hero-illustration img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 10px 18px var(--shadow));
+  }
+
+  .hero-text { flex: 1; }
+
+  .hero-text .lede { margin: 0; }
+
+  @media (max-width: 680px) {
+    header.hero {
+      flex-direction: column;
+      text-align: center;
+      gap: 24px;
+    }
+    .hero-illustration { width: 150px; }
+    .hero-text .lede { margin: 0 auto; }
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    color: var(--forest);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  h1.title {
+    font-family: "Zen Old Mincho", serif;
+    font-weight: 900;
+    font-size: clamp(30px, 5.6vw, 50px);
+    line-height: 1.35;
+    margin: 0 0 18px;
+    color: var(--forest-deep);
+  }
+
+  h1.title .accent { color: var(--mustard); }
+
+  .lede {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: "Zen Old Mincho", serif;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    color: var(--mustard);
+    font-weight: 700;
+    text-align: center;
+    margin: 64px 0 10px;
+  }
+
+  h2.section-title {
+    font-family: "Zen Old Mincho", serif;
+    font-size: 26px;
+    text-align: center;
+    color: var(--forest-deep);
+    margin: 0 0 32px;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 8px;
+    margin-top: 24px;
+  }
+
+  .intro-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 34px 18px 22px;
+    text-align: left;
+    position: relative;
+    overflow: visible;
+  }
+
+  .intro-num {
+    font-family: "Zen Old Mincho", serif;
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--mustard);
+    opacity: 0.85;
+    position: absolute;
+    top: -20px;
+    left: 16px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-shadow: 2px 2px 0 var(--paper);
+  }
+
+  .intro-card h3 {
+    font-family: "Zen Old Mincho", serif;
+    font-size: 16px;
+    margin: 6px 0 8px;
+    color: var(--forest-deep);
+  }
+
+  .intro-card p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .intro-grid { grid-template-columns: 1fr; }
+  }
+
+  .grade-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 0 28px;
+    flex-wrap: wrap;
+  }
+
+  .grade-tab {
+    font-family: "Zen Old Mincho", serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 9px 20px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: var(--paper-card);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .grade-tab:hover { border-color: var(--forest); color: var(--forest); }
+
+  .grade-tab.active {
+    background: var(--forest);
+    border-color: var(--forest);
+    color: #fff;
+    box-shadow: 0 3px 10px var(--shadow);
+  }
+
+  .grade-panel { display: none; }
+  .grade-panel.active { display: block; animation: fadein 0.25s ease; }
+
+  .points-box {
+    background: linear-gradient(135deg, var(--forest) 0%, var(--forest-deep) 100%);
+    border-radius: 6px;
+    padding: 26px 28px;
+    margin-bottom: 32px;
+    color: #fff;
+  }
+
+  .points-box .points-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--mustard-soft);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .points-box h3 {
+    font-family: "Zen Old Mincho", serif;
+    font-size: 19px;
+    margin: 0 0 16px;
+  }
+
+  .points-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .points-list li {
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.75;
+  }
+
+  .points-list b {
+    display: block;
+    font-family: "Zen Old Mincho", serif;
+    font-size: 13.5px;
+    color: var(--mustard-soft);
+    margin-bottom: 4px;
+  }
+
+  @media (max-width: 640px) {
+    .points-list { grid-template-columns: 1fr; }
+  }
+
+  .book-category-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 30px 0 14px;
+  }
+
+  .book-category-heading .line { flex: 1; height: 1px; background: var(--line); }
+
+  .book-category-heading span.label {
+    font-family: "Zen Old Mincho", serif;
+    font-size: 14px;
+    color: var(--forest-deep);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .book-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px var(--shadow);
+  }
+
+  .book-head {
+    display: flex;
+    gap: 20px;
+    padding: 22px 24px;
+    align-items: flex-start;
+  }
+
+  .book-cover-slot {
+    display: block;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .book-cover-slot:hover {
+    transform: translateY(-2px);
+  }
+
+  .book-cover-slot:hover .book-cover {
+    box-shadow: 0 4px 10px var(--shadow);
+  }
+
+  .book-cover {
+    flex-shrink: 0;
+    width: 64px;
+    height: 88px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 5px var(--shadow);
+    display: block;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .book-info { flex: 1; min-width: 0; }
+
+  .badge-row { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+
+  .badge {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .badge.kadai { background: rgba(44,74,52,0.12); color: var(--forest); }
+  .badge.teiban { background: rgba(181,88,63,0.12); color: var(--clay); }
+  .badge.theme { background: rgba(201,138,43,0.14); color: var(--mustard); }
+
+  .book-title {
+    font-family: "Zen Old Mincho", serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--forest-deep);
+  }
+
+  .book-author { font-size: 13px; color: var(--ink-soft); margin: 0 0 10px; }
+
+  .book-synopsis {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .writability {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--forest);
+  }
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--forest); }
+  .dot.mid { background: var(--mustard); }
+
+  .angles {
+    border-top: 1px dashed var(--line);
+    padding: 4px 24px 24px;
+  }
+
+  .angles-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    margin: 16px 0 12px;
+  }
+
+  .bookmark-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .bookmark {
+    position: relative;
+    cursor: pointer;
+    background: var(--mustard-soft);
+    color: var(--forest-deep);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px 18px 14px;
+    border-radius: 3px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%);
+    transition: transform 0.15s ease, background 0.15s ease;
+    border: none;
+  }
+
+  .bookmark:hover { transform: translateY(-3px); background: #f0d9a8; }
+  .bookmark.selected { background: var(--forest); color: #fff; }
+
+  .angle-detail {
+    margin-top: 16px;
+    background: #fff;
+    border-left: 3px solid var(--mustard);
+    padding: 16px 18px;
+    border-radius: 0 4px 4px 0;
+    display: none;
+  }
+
+  .angle-detail.show { display: block; animation: fadein 0.25s ease; }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .angle-detail h4 {
+    font-family: "Zen Old Mincho", serif;
+    margin: 0 0 8px;
+    font-size: 14.5px;
+    color: var(--forest-deep);
+  }
+
+  .angle-detail p {
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+  }
+
+  .starter {
+    font-size: 12.5px;
+    background: var(--paper);
+    padding: 10px 12px;
+    border-radius: 3px;
+    color: var(--forest);
+  }
+
+  .starter b { color: var(--forest-deep); }
+
+  .pending-note {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    opacity: 0.75;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .notice {
+    margin-top: 48px;
+    padding: 20px 24px;
+    background: rgba(44, 74, 52, 0.06);
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  .notice b { color: var(--forest-deep); }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  @media (max-width: 520px) {
+    .book-head { flex-direction: column; }
+    .book-cover { width: 84px; height: 116px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-illustration">
+      <img src="images/hero-books-pen.png" alt="積み重なった本のイラスト">
+    </div>
+    <div class="hero-text">
+      <div class="eyebrow">SUMMER READING GUIDE</div>
+      <h1 class="title">あらすじの先、<br><span class="accent">「書ける」</span>がわかる本えらび</h1>
+      <p class="lede">表紙とあらすじだけじゃ、感想文が書きやすいかはわからない。区分別のおすすめ本に、感想が広がる「切り口」をいくつか添えました。</p>
+    </div>
+  </header>
+
+  <div class="section-label">はじめに</div>
+  <h2 class="section-title">読書感想文とは？</h2>
+  <div class="intro-grid">
+    <div class="intro-card">
+      <div class="intro-num">01</div>
+      <h3>あらすじの要約ではない</h3>
+      <p>読書感想文は「お話の内容説明」ではなく、読んで自分が何を感じ、何を考えたかを書くものです。あらすじは短くてOK。</p>
+    </div>
+    <div class="intro-card">
+      <div class="intro-num">02</div>
+      <h3>正解はひとつじゃない</h3>
+      <p>同じ本を読んでも、感じることは人によって違います。「自分だけの感じ方」を見つけることが、感想文のいちばんの土台です。</p>
+    </div>
+    <div class="intro-card">
+      <div class="intro-num">03</div>
+      <h3>場面を1つ選ぶと書きやすい</h3>
+      <p>本全体をまとめようとせず、心に残った場面を1つ選んで、そこから自分の経験や考えにつなげると、まとまった文章になります。</p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:70px;">区分をえらぶ</div>
+  <h2 class="section-title">2026年 課題図書と書き方のポイント</h2>
+  <div class="grade-tabs">
+    <div class="grade-tab active" data-grade="low">低学年(1・2年生)</div>
+    <div class="grade-tab" data-grade="mid">中学年(3・4年生)</div>
+    <div class="grade-tab" data-grade="high">高学年(5・6年生)</div>
+  </div>
+
+  <!-- === 低学年 === -->
+  <div class="grade-panel active" id="panel-low">
+    <div class="points-box">
+      <div class="points-eyebrow">低学年が書くときのポイント</div>
+      <h3>「気持ちの変化」と「ひとつの場面」に注目しよう</h3>
+      <ul class="points-list">
+        <li><b>① はじめとさいごを比べる</b>主人公の気持ちが物語の前と後でどう変わったかを見つけると、書く内容が決まりやすい。</li>
+        <li><b>② 好きな場面を1つ選ぶ</b>全部を説明しようとせず、いちばん印象に残った場面だけを選んで詳しく書く。</li>
+        <li><b>③ 自分の経験と比べる</b>「わたしも似たようなことがあった」と重ねると、自分の言葉で書きやすくなる。</li>
+      </ul>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">2026年度 課題図書(低学年)</span><span class="line"></span></div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4333029449?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/91YNu8YCwCL._SY300_.jpg" alt="まこちゃんとコトバロボ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">努力・正直さ</span></div>
+          <h3 class="book-title">まこちゃんとコトバロボ</h3>
+          <p class="book-synopsis">宿題やドリルをやりたくないまこちゃんの前に、国語のことなら何でも代わりにやってくれるロボット「コトバロボ」が現れる。全部おまかせで楽ができると喜ぶが、テストでは全く実力が発揮できず、自分の力で出来るようになって嬉しそうな友だちの姿を見て、「これでいいのかな」と立ち止まっていく物語。</p>
+          <div class="writability"><span class="dot"></span>努力と正直さがテーマで感想文が書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b1-1">① 楽をすることと身につくこと</button>
+          <button class="bookmark" data-target="b1-2">② 友だちの姿を見て気づいたこと</button>
+        </div>
+        <div class="angle-detail" id="b1-1">
+          <h4>① 「楽をすること」と「身につくこと」の違い</h4>
+          <p>コトバロボに任せれば楽ができるはずなのに、まこちゃんはテストで実力を発揮できませんでした。「楽をすること」と「本当に身につくこと」は違う、というメッセージを自分の言葉で説明してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「楽をすれば出来るようになる、とわたしも思っていました。でも…」</div>
+        </div>
+        <div class="angle-detail" id="b1-2">
+          <h4>② 友だちの姿を見て気づいたこと</h4>
+          <p>まこちゃんが変わったきっかけは、自分の力で出来るようになって嬉しそうな友だちの姿でした。誰かの姿を見て自分も変わりたいと思った経験があれば、そこと結びつけて書けます。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、友だちが頑張っている姿を見て、○○と思ったことがあります。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4776411474?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/91vh0buAjgL._SY300_.jpg" alt="なにかいいことあった？">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">日常の幸せ</span></div>
+          <h3 class="book-title">なにかいいことあった？</h3>
+          <p class="book-synopsis">おじいちゃんに「今日、何かいいことあった？」と聞かれたダニエルが、公園で出会う鳥やオタマジャクシやリスに教えられながら、口笛が吹けるようになったことや植物が芽を出したことなど、身の回りの小さな「いいこと」に気づいていく絵本。</p>
+          <div class="writability"><span class="dot"></span>文章が短く、いちばん書きやすい1冊</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b2-1">① 自分の「いいこと」探し</button>
+          <button class="bookmark" data-target="b2-2">② おじいちゃんの問いかけ</button>
+        </div>
+        <div class="angle-detail" id="b2-1">
+          <h4>① 自分の「いいこと」を探してみる</h4>
+          <p>本を読んだあと、自分の1日を振り返って「いいこと」を1つ見つけてみましょう。それを感想文に書くと、自分だけの内容になります。</p>
+          <div class="starter"><b>書き出しの例：</b>「この本を読んで、わたしの今日の『いいこと』を考えてみました。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+        <div class="angle-detail" id="b2-2">
+          <h4>② おじいちゃんの「問いかけ」について考える</h4>
+          <p>おじいちゃんのたった一言の質問がきっかけで、ダニエルはたくさんの「いいこと」に気づいていきます。誰かに聞かれたことで、自分の一日を振り返ったり、忘れていた出来事を思い出したりした経験があれば、そこにつなげて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、誰かに『今日どうだった？』と聞かれて、初めて気づいたことがあります。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4769205147?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/61qFpRbJ6-L._SY300_.jpg" alt="ララのまほうのことば">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">やさしさ・思いやり</span></div>
+          <h3 class="book-title">ララのまほうのことば</h3>
+          <p class="book-synopsis">優しいことばを語りかけるララの「まほうのことば」が、小さな空き地から街全体へと少しずつ広がっていく物語。ことばの持つ力を、絵と文章の両方で味わえる一冊。</p>
+          <div class="writability"><span class="dot"></span>やさしさ・思いやりがテーマで書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b7-1">① ことばの力を考える</button>
+          <button class="bookmark" data-target="b7-2">② 自分が言われて嬉しかったことば</button>
+        </div>
+        <div class="angle-detail" id="b7-1">
+          <h4>① ことばの力に注目する</h4>
+          <p>たった一つの優しいことばが、空き地から街へと広がっていく様子が描かれています。自分の一言が誰かに広がった経験や、逆に誰かのことばが自分に広がった経験を思い出してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「ことばには力がある、とこの本を読んで思いました。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+        <div class="angle-detail" id="b7-2">
+          <h4>② 自分が言われて嬉しかったことばを思い出す</h4>
+          <p>誰かに優しいことばをかけてもらって嬉しかった経験と、ララの物語を重ねて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、○○と言われて嬉しかったことがあります。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4893097474?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/71wGvyA0ObL._SY300_.jpg" alt="たねはいのちのおわりとはじまり">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">いのち・科学</span></div>
+          <h3 class="book-title">たねはいのちのおわりとはじまり</h3>
+          <p class="book-synopsis">一つの命が終わるとき、そこから次の命がどう始まっていくのかを、"たね"を通して写真で紹介する科学絵本。自由研究の題材にもつながる内容。</p>
+          <div class="writability"><span class="dot mid"></span>科学絵本のため「知らなかったこと」を書く形が合う</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b8-1">① 初めて知ったこと</button>
+          <button class="bookmark" data-target="b8-2">② 「終わり」と「はじまり」</button>
+        </div>
+        <div class="angle-detail" id="b8-1">
+          <h4>① 初めて知ったことを書く</h4>
+          <p>物語ではなく科学絵本なので、感情の変化ではなく「知らなかったことに驚いた」という形が書きやすいです。写真や図鑑を見返して、印象に残った"たね"を1つ選びましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしは、たねについて○○ということを初めて知りました。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+        <div class="angle-detail" id="b8-2">
+          <h4>② 「終わり」と「はじまり」のつながりを考える</h4>
+          <p>タイトルにもあるように、一つの命の終わりが、次の命のはじまりにつながっています。身の回りで「終わり」から新しい何かが始まった経験（植物・生き物・行事など）があれば、たねの話と重ねて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしは、たねの本を読んで、『終わり』と『はじまり』はつながっているのかもしれないと思いました。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">定番作品(低学年)</span><span class="line"></span></div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4769020015?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/71FYKucObhL._SY300_.jpg" alt="スイミー">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">仲間・工夫・勇気</span></div>
+          <h3 class="book-title">スイミー</h3>
+          <p class="book-author">レオ・レオニ</p>
+          <p class="book-synopsis">小さな黒い魚スイミーが、仲間の赤い魚たちと力を合わせ、大きな魚に見立てた群れをつくって困難に立ち向かう、世界的に読み継がれる絵本。</p>
+          <div class="writability"><span class="dot"></span>教科書にも採用される定番。テーマがはっきりしていて書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b9-1">① 一人と仲間、どちらの力</button>
+          <button class="bookmark" data-target="b9-2">② スイミーの工夫のすごさ</button>
+        </div>
+        <div class="angle-detail" id="b9-1">
+          <h4>① 「一人の力」と「仲間の力」を比べる</h4>
+          <p>スイミーは一匹だけ色が違い、はじめは一人ぼっちになります。そこから仲間と出会い、力を合わせて困難を乗り越えます。「一人でできること」と「仲間となら出来ること」の違いについて、自分の経験と結びつけて書けます。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、一人では出来なかったことが、友だちと一緒ならできた経験があります。」</div>
+        </div>
+        <div class="angle-detail" id="b9-2">
+          <h4>② スイミーの工夫のすごさに注目する</h4>
+          <p>スイミーは力ではなく「アイデア」で困難を乗り越えます。自分がアイデアで問題を解決した経験や、これから工夫してみたいことを書くと個性的な感想文になります。</p>
+          <div class="starter"><b>書き出しの例：</b>「スイミーのアイデアを読んで、わたしも○○のとき工夫してみようと思いました。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4772100180?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/61+sWIo-X5L._SY300_.jpg" alt="わたしのワンピース">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">個性・自分らしさ</span></div>
+          <h3 class="book-title">わたしのワンピース</h3>
+          <p class="book-author">にしまきかやこ</p>
+          <p class="book-synopsis">うさぎが作った真っ白なワンピースが、花畑やお空の模様を映しながら次々と柄を変えていく、色とりどりの絵本。長く読み継がれている定番作品。</p>
+          <div class="writability"><span class="dot"></span>絵の美しさと繰り返しの構成で低学年に読みやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w1-1">① 好きな柄を選ぶ</button>
+          <button class="bookmark" data-target="w1-2">② 自分だけの特別な物を考える</button>
+        </div>
+        <div class="angle-detail" id="w1-1">
+          <h4>① 好きな柄を選ぶ</h4>
+          <p>自分がいちばん好きだと思った柄(花・水玉・波など)を1つ選び、なぜ好きかを書いてみましょう。理由をつけることで感想文らしくなります。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしがいちばん好きな柄は○○です。なぜなら…」</div>
+        </div>
+        <div class="angle-detail" id="w1-2">
+          <h4>② 自分だけの特別な物を考える</h4>
+          <p>うさぎにとってワンピースが特別な物であるように、自分にとって特別な物を思い浮かべて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、うさぎのワンピースのように大切にしている物があります。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4834000621?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/91BSBGjTfXL._SY300_.jpg" alt="おおきなかぶ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">協力</span></div>
+          <h3 class="book-title">おおきなかぶ</h3>
+          <p class="book-author">ロシア民話</p>
+          <p class="book-synopsis">おじいさんが植えた大きなかぶが抜けず、おばあさん、まご、犬、猫、ねずみと次々に加わり、みんなで力を合わせてついに抜くという、繰り返しのリズムが心地よい昔話。</p>
+          <div class="writability"><span class="dot"></span>展開がシンプルで低学年にも書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w2-1">① 誰の力が一番大事だったか考える</button>
+          <button class="bookmark" data-target="w2-2">② 力を合わせた経験と重ねる</button>
+        </div>
+        <div class="angle-detail" id="w2-1">
+          <h4>① 誰の力が一番大事だったか考える</h4>
+          <p>おじいさんから小さなねずみまで、みんなの力が集まってようやくかぶが抜けます。一番小さな力でも大事だったという点に注目してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「小さなねずみの力が最後に大事だったところが面白いと思いました。」</div>
+        </div>
+        <div class="angle-detail" id="w2-2">
+          <h4>② 力を合わせた経験と重ねる</h4>
+          <p>自分もみんなで力を合わせて何かを成し遂げた経験があれば、そこと結びつけて書けます。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、みんなで力を合わせて○○をしたことがあります。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4834000435?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/91eN8tBTTnL._SY300_.jpg" alt="三びきのやぎのがらがらどん">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">勇気・知恵</span></div>
+          <h3 class="book-title">三びきのやぎのがらがらどん</h3>
+          <p class="book-author">ノルウェー民話</p>
+          <p class="book-synopsis">山の草を食べに行きたい三びきのやぎが、橋の下の恐ろしいトロルに立ち向かう昔話。小さいやぎから大きいやぎへと知恵と勇気で乗り越えていく展開が印象的。</p>
+          <div class="writability"><span class="dot"></span>怖さと勇気の対比がはっきりしていて書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w3-1">① 一番好きなやぎを選ぶ</button>
+          <button class="bookmark" data-target="w3-2">② 怖いものに立ち向かう勇気</button>
+        </div>
+        <div class="angle-detail" id="w3-1">
+          <h4>① 一番好きなやぎを選ぶ</h4>
+          <p>小さいやぎ・中くらいのやぎ・大きいやぎ、それぞれのトロルへの立ち向かい方が違います。一番好きなやぎを選んで、その理由を書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしが一番好きなのは○○やぎです。なぜなら…」</div>
+        </div>
+        <div class="angle-detail" id="w3-2">
+          <h4>② 怖いものに立ち向かう勇気</h4>
+          <p>怖いトロルに立ち向かう場面から、自分が怖いことに立ち向かった経験を思い出してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、怖かったけれど立ち向かったことがあります。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4566002764?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/915bEg3FtIL._SY300_.jpg" alt="ずーっと ずっと だいすきだよ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">別れ・思い出</span></div>
+          <h3 class="book-title">ずーっと ずっと だいすきだよ</h3>
+          <p class="book-author">ハンス・ウィルヘルム</p>
+          <p class="book-synopsis">年をとった愛犬エルフィーに、毎晩「だいすきだよ」と伝え続けた少年。エルフィーが死んでしまったとき、少年は悲しみながらも、伝え続けてきたことに救われる。低学年にも読まれる、別れをテーマにした定番絵本。</p>
+          <div class="writability"><span class="dot mid"></span>感情が動く内容。読み聞かせと合わせて取り組むと書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w4-1">① 大切な人に伝えたいことば</button>
+          <button class="bookmark" data-target="w4-2">② 別れを通して気づいたこと</button>
+        </div>
+        <div class="angle-detail" id="w4-1">
+          <h4>① 大切な人に伝えたいことば</h4>
+          <p>少年は毎晩「だいすきだよ」と伝え続けました。自分が大切な人に伝えたいことばを考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、大切な人に「○○」と伝えたいです。」</div>
+        </div>
+        <div class="angle-detail" id="w4-2">
+          <h4>② 別れを通して気づいたこと</h4>
+          <p>悲しい別れがあっても、伝え続けてきたことが少年を救います。自分にとって大切な思い出について書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「この本を読んで、わたしは大切な人との時間について考えました。」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === 中学年 === -->
+  <div class="grade-panel" id="panel-mid">
+    <div class="points-box">
+      <div class="points-eyebrow">中学年が書くときのポイント</div>
+      <h3>「挑戦」と「なぜそう思ったか」を書こう</h3>
+      <ul class="points-list">
+        <li><b>① 挑戦と結果を分けて書く</b>主人公が何に挑戦し、どんな結果になったかを整理すると流れが作りやすい。</li>
+        <li><b>② 「なぜ」を1つ入れる</b>感じたことに理由を添えると、文章に説得力が出る。</li>
+        <li><b>③ 知らなかったことを書く</b>ノンフィクション作品は「初めて知ったこと」を書くと自由研究のようにまとめやすい。</li>
+      </ul>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">2026年度 課題図書(中学年)</span><span class="line"></span></div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4591185966?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/61brdhj8UNL._SY300_.jpg" alt="まだまだここから">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">努力・悔しさ</span></div>
+          <h3 class="book-title">まだまだここから</h3>
+          <p class="book-synopsis">水泳が得意な小学4年生の蓮は、スイミングスクールの特待生選抜に挑む。しかし選ばれたのは頑張った蓮ではなく弟だった――そんな悔しい出来事を通して、努力の意味を見つめ直していく物語。</p>
+          <div class="writability"><span class="dot"></span>努力・悔しさがテーマで書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b3-1">① 挫折からの立ち直り方</button>
+          <button class="bookmark" data-target="b3-2">② 自分の挑戦と比べる</button>
+        </div>
+        <div class="angle-detail" id="b3-1">
+          <h4>① 選ばれなかった悔しさとどう向き合うか</h4>
+          <p>頑張ったのに選ばれなかった蓮の悔しさは、多くの子が経験したことのある気持ちです。その悔しさを蓮がどう受け止めていくかに注目してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「頑張ったのに選ばれなかったとき、わたしは…」</div>
+        </div>
+        <div class="angle-detail" id="b3-2">
+          <h4>② 自分の挑戦と比べる</h4>
+          <p>結果が出なかったことと、努力そのものの意味は別のものです。自分が頑張ったことを振り返り、結果以外に得られたものがあったか考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも○○を頑張りましたが、結果が出なかったことがあります。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/459310534X?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/813WYgWZUWL._SY300_.jpg" alt="それからぼくはひとりで歩く">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">勇気・自立</span></div>
+          <h3 class="book-title">それからぼくはひとりで歩く</h3>
+          <p class="book-synopsis">メキシコに暮らす、目の見えない11歳の少年ハイメ。気になるクラスメートの前でつい見栄をはってしまい、初めてひとりでバスに乗って学校から家まで帰ることになる、ささやかで大きな一日の冒険を描いた物語。</p>
+          <div class="writability"><span class="dot"></span>勇気と自立がテーマ</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b4-1">① 見栄をはったことがきっかけの挑戦</button>
+          <button class="bookmark" data-target="b4-2">② 目が見えなくても感じられる世界</button>
+        </div>
+        <div class="angle-detail" id="b4-1">
+          <h4>① 見栄をはったことがきっかけの挑戦</h4>
+          <p>ハイメが一人で挑戦することになったきっかけは「見栄をはったこと」でした。自分が見栄をはってしまった経験や、それがきっかけで挑戦することになった経験を思い出してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、つい見栄をはってしまい、あとで大変だったことがあります。」</div>
+        </div>
+        <div class="angle-detail" id="b4-2">
+          <h4>② 目が見えなくても感じられる世界に注目する</h4>
+          <p>ハイメは目が見えない分、音やにおい、手ざわりなど、他の感覚で世界を感じ取りながら一人でバスに乗って帰ります。目を閉じて周りの音や気配に意識を向けてみた経験があれば、そこから書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「目を閉じて周りの音を聞いてみると、わたしは○○ということに気づきました。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">ほか中学年 課題図書</span><span class="line"></span></div>
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4811333217?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/81s9WeLDqJL._SY300_.jpg" alt="おいしいお米をつくりたい！">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">挑戦・実話</span></div>
+          <h3 class="book-title">おいしいお米をつくりたい！</h3>
+          <p class="book-synopsis">小学生のゆうちゃんが農家に弟子入りし、米づくりに挑戦する実話。写真が多く読みやすい。</p>
+          <div class="writability"><span class="dot"></span>実話ならではの具体的な挑戦が書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b10-1">① 挑戦して分かったこと</button>
+          <button class="bookmark" data-target="b10-2">② 農家の人との関わり</button>
+        </div>
+        <div class="angle-detail" id="b10-1">
+          <h4>① 挑戦して分かったことに注目する</h4>
+          <p>実話なので、ゆうちゃんが米づくりを通して発見したことがリアルに書かれています。食べものが出来るまでの大変さ、自然と向き合うこと、人と協力することの大切さのうち、自分がいちばん驚いたことを選んで書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしは、お米がこんなに手間をかけて作られているとは知りませんでした。」</div>
+        </div>
+        <div class="angle-detail" id="b10-2">
+          <h4>② 農家の人との関わりから学んだこと</h4>
+          <p>ゆうちゃんは農家に弟子入りして米づくりを教わります。知らないことを誰かに教えてもらいながら挑戦した経験や、詳しい人から学ぶことの面白さについて、自分の経験と結びつけて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、○○について詳しい人に教えてもらいながら挑戦したことがあります。」</div>
+        </div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4751532367?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/81iPbQKPMAL._SY300_.jpg" alt="宇宙でウンチ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">科学</span></div>
+          <h3 class="book-title">宇宙でウンチ</h3>
+          <p class="book-synopsis">宇宙飛行士の排せつを支える「宇宙トイレ」の歴史と仕組みを、ユーモアを交えて紹介する科学絵本。無重力という当たり前が通じない世界の工夫が「知らなかったこと」として書きやすく、自由研究にも最適。</p>
+          <div class="writability"><span class="dot"></span>ユーモアがあり、科学系の中では取り組みやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b11-1">① いちばん驚いたこと</button>
+          <button class="bookmark" data-target="b11-2">② 当たり前が通じない世界</button>
+        </div>
+        <div class="angle-detail" id="b11-1">
+          <h4>① いちばん驚いたことを書く</h4>
+          <p>宇宙飛行士の生活には、地球では当たり前のことが当たり前でなくなる場面がたくさんあります。いちばん驚いた仕組みを1つ選んで、なぜ驚いたかを書くとまとまります。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしがいちばん驚いたのは、○○ということです。」</div>
+          </div>
+        <div class="angle-detail" id="b11-2">
+          <h4>② 「当たり前」が通じない世界の工夫を考える</h4>
+          <p>地球では当たり前にできることが、宇宙では大きな工夫が必要になります。もし自分が当たり前だと思っていることができなくなったら、どんな工夫をするか想像しながら書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしがもし宇宙に行ったら、○○に困ると思います。だから…」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">定番作品(中学年)</span><span class="line"></span></div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/426590906X?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/71NbBupBrFL._SY300_.jpg" alt="モチモチの木">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">勇気・成長</span></div>
+          <h3 class="book-title">モチモチの木</h3>
+          <p class="book-author">斎藤隆介</p>
+          <p class="book-synopsis">夜が怖くて一人でトイレにも行けない豆太が、じさまの急病をきっかけに、真夜中の山道を医者を呼びに一人で駆け抜ける物語。国語の教科書でも長年親しまれている定番作品。</p>
+          <div class="writability"><span class="dot"></span>教科書の定番。「怖さ」と「勇気」の対比が明確で書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b12-1">① 豆太の勇気はどこから来たか</button>
+          <button class="bookmark" data-target="b12-2">② 自分の「怖いけど頑張った」経験</button>
+        </div>
+        <div class="angle-detail" id="b12-1">
+          <h4>① 豆太の勇気はどこから来たかを考える</h4>
+          <p>臆病な豆太が、じさまを助けたい一心で怖さを乗り越えます。「大切な人のため」という気持ちが勇気に変わる瞬間に注目すると、感想文の軸が作りやすいです。</p>
+          <div class="starter"><b>書き出しの例：</b>「豆太は本当は怖がりなのに、じさまのために夜道を走ります。わたしは…」</div>
+        </div>
+        <div class="angle-detail" id="b12-2">
+          <h4>② 自分の「怖いけど頑張った」経験と重ねる</h4>
+          <p>自分が怖かったけれど誰かのために頑張った経験を思い出し、豆太の気持ちと比べて書くと、自分らしい感想文になります。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、怖かったけれど頑張ったことがあります。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4652005024?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/81ldBuHWBSL._SY300_.jpg" alt="チョコレート戦争">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">正義・対立</span></div>
+          <h3 class="book-title">チョコレート戦争</h3>
+          <p class="book-author">大石真</p>
+          <p class="book-synopsis">洋菓子店のショーウィンドウを壊してしまった疑いをかけられた光一たちが、汚名をそそぐために奮闘する物語。子ども同士の正義感や大人への不信感が描かれる、長年読み継がれる児童文学。</p>
+          <div class="writability"><span class="dot mid"></span>ストーリーがしっかりしていて読み応えがある</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w5-1">① 疑われた時の悔しさ</button>
+          <button class="bookmark" data-target="w5-2">② 正義感について考える</button>
+        </div>
+        <div class="angle-detail" id="w5-1">
+          <h4>① 疑われた時の悔しさ</h4>
+          <p>やっていないことを疑われる光一たちの悔しさに注目し、自分が誤解された経験があれば重ねて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、誤解されて悔しかった経験があります。」</div>
+        </div>
+        <div class="angle-detail" id="w5-2">
+          <h4>② 正義感について考える</h4>
+          <p>子どもたちが自分たちの力で汚名をそそごうとする姿から、正しさを証明するために大切なことを考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「光一たちの行動を読んで、正しさを証明するには○○が大事だと思いました。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4591042790?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/81i4au94sqL._SY300_.jpg" alt="ズッコケ三人組の推理教室">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">友情・冒険</span></div>
+          <h3 class="book-title">ズッコケ三人組の推理教室</h3>
+          <p class="book-author">那須正幹</p>
+          <p class="book-synopsis">ハチベエ・モーちゃん・ハカセの仲良し三人組が、身近な事件や謎に挑んでいく人気シリーズの一冊。ユーモアがありながら友情や協力の大切さが伝わる。</p>
+          <div class="writability"><span class="dot"></span>シリーズものなので、続きを読みたくなる仕掛けが感想に書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w6-1">① 三人それぞれの得意なこと</button>
+          <button class="bookmark" data-target="w6-2">② 友達と協力して解決すること</button>
+        </div>
+        <div class="angle-detail" id="w6-1">
+          <h4>① 三人それぞれの得意なこと</h4>
+          <p>ハチベエ・モーちゃん・ハカセは性格も得意なことも違います。自分ならどの役割が近いか考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしは三人の中で○○に近いと思います。なぜなら…」</div>
+        </div>
+        <div class="angle-detail" id="w6-2">
+          <h4>② 友達と協力して解決すること</h4>
+          <p>一人では解決できない謎も、三人で力を合わせることで解決に近づきます。自分の友達関係と重ねて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、友達と力を合わせて何かを解決した経験があります。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4061486683?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/61eHfmfREaL._SY300_.jpg" alt="霧のむこうのふしぎな町">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">不思議・成長</span></div>
+          <h3 class="book-title">霧のむこうのふしぎな町</h3>
+          <p class="book-author">柏葉幸子</p>
+          <p class="book-synopsis">夏休み、一人でふしぎな町「霧の谷」に預けられた少女リナが、風変わりな人々や不思議な出来事に出会いながら成長していくファンタジー。</p>
+          <div class="writability"><span class="dot mid"></span>不思議な世界観が魅力。想像力を広げて書ける</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w7-1">① 知らない場所での出会い</button>
+          <button class="bookmark" data-target="w7-2">② 成長した自分に気づく</button>
+        </div>
+        <div class="angle-detail" id="w7-1">
+          <h4>① 知らない場所での出会い</h4>
+          <p>リナが知らない町で出会う風変わりな人々に注目し、自分が新しい場所で出会った人について書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、初めての場所で出会った人との思い出があります。」</div>
+        </div>
+        <div class="angle-detail" id="w7-2">
+          <h4>② 成長した自分に気づく</h4>
+          <p>夏休みの終わりに、リナは前と違う自分に気づきます。自分自身が変わったと感じた経験を書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも、あの経験を通して前と違う自分に気づきました。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4035500704?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/71nUxOgoSDL._SY300_.jpg" alt="大どろぼうホッツェンプロッツ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">知恵・痛快</span></div>
+          <h3 class="book-title">大どろぼうホッツェンプロッツ</h3>
+          <p class="book-author">オトフリート・プロイスラー</p>
+          <p class="book-synopsis">おばあさんの大切なコーヒーひきを盗んだ大どろぼうホッツェンプロッツを、カスパールとゼッペルの二人が知恵を絞って追いかける、痛快で愉快な物語。</p>
+          <div class="writability"><span class="dot"></span>テンポが良く、冒険物語として読みやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w8-1">① 知恵で立ち向かう痛快さ</button>
+          <button class="bookmark" data-target="w8-2">② 諦めない気持ち</button>
+        </div>
+        <div class="angle-detail" id="w8-1">
+          <h4>① 知恵で立ち向かう痛快さ</h4>
+          <p>力ではなく知恵でどろぼうに立ち向かうカスパールたちの様子に注目し、自分ならどんな作戦を考えるか想像してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしなら、ホッツェンプロッツに○○という作戦を使うと思います。」</div>
+        </div>
+        <div class="angle-detail" id="w8-2">
+          <h4>② 諦めない気持ち</h4>
+          <p>何度も失敗しながらも諦めずに立ち向かう二人の姿から、自分が諦めずに頑張ったことを思い出してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、何度失敗しても諦めなかったことがあります。」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === 高学年 === -->
+  <div class="grade-panel" id="panel-high">
+    <div class="points-box">
+      <div class="points-eyebrow">高学年が書くときのポイント</div>
+      <h3>「テーマ」と「自分の意見」を意識しよう</h3>
+      <ul class="points-list">
+        <li><b>① 物語の裏にあるテーマを考える</b>家族、平和、社会問題など、物語が伝えようとしていることを言葉にしてみる。</li>
+        <li><b>② 賛成・反対で考える</b>登場人物の行動や選択に賛成か反対か、理由をつけて考えると意見が書きやすい。</li>
+        <li><b>③ 社会や自分の生活と結びつける</b>物語の出来事を、自分の身の回りやニュースと結びつけて考える。</li>
+      </ul>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">2026年度 課題図書(高学年)</span><span class="line"></span></div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4265840671?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/81N66hShnQL._SY300_.jpg" alt="ポジション！">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">自分の役割</span></div>
+          <h3 class="book-title">ポジション！</h3>
+          <p class="book-synopsis">運動が苦手な芽吹(めぶき)が、ミニバスケットボールを始め、仲間との関わりを通してチームの中での自分の役割や居場所を見つけていく成長物語。</p>
+          <div class="writability"><span class="dot"></span>自分の役割というテーマで書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b5-1">① 自分の「役割」を考える</button>
+          <button class="bookmark" data-target="b5-2">② 苦手なことへの挑戦</button>
+        </div>
+        <div class="angle-detail" id="b5-1">
+          <h4>① 自分の「役割」に置きかえて考える</h4>
+          <p>主人公がチームの中で自分の役割に悩む姿を、クラスや部活動での自分の立場と重ねてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしも自分の役割について悩んだことがあります。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+        <div class="angle-detail" id="b5-2">
+          <h4>② 苦手なことに挑戦した勇気に注目する</h4>
+          <p>運動が苦手な芽吹が、それでもミニバスケットボールを始めるところから物語が始まります。自分が苦手だと思っていることに、思い切って挑戦してみた経験があれば、芽吹の気持ちと重ねて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、苦手だったけれど思い切って挑戦してみたことがあります。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4580826728?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/71uWTjpbi0L._SY300_.jpg" alt="リヒト！">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">家族の記憶</span></div>
+          <h3 class="book-title">リヒト！</h3>
+          <p class="book-synopsis">亡くなった祖母が理人(りひと)に託した、中身の分からない封筒。それをきっかけに、苦手だと思っていた相手と一緒にドイツへ向かうことになる。旅を通して、家族や人の見方が少しずつ変わっていく物語。</p>
+          <div class="writability"><span class="dot mid"></span>テーマが深く、書き応えがある</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b6-1">① 家族の歴史を考える</button>
+          <button class="bookmark" data-target="b6-2">② 苦手な相手への見方の変化</button>
+        </div>
+        <div class="angle-detail" id="b6-1">
+          <h4>① 家族の歴史を考える</h4>
+          <p>主人公が祖母の過去を知っていく過程を、自分の家族について知っていることと比べて考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしは、おばあちゃんの若いころの話をあまり知りません。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+        <div class="angle-detail" id="b6-2">
+          <h4>② 苦手だと思っていた相手への見方が変わる過程</h4>
+          <p>理人は、はじめは苦手だと思っていた相手と一緒に旅をすることになります。一緒に過ごすうちに相手への見方が変わっていく様子に注目し、自分が誰かへの印象が変わった経験があれば書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、最初は苦手だと思っていたけれど、仲良くなった人がいます。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">ほか高学年 課題図書</span><span class="line"></span></div>
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4863898460?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/81Cwgdzjf2L._SY300_.jpg" alt="ミシュカ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">難民・平和</span></div>
+          <h3 class="book-title">ミシュカ</h3>
+          <p class="book-synopsis">アフガニスタンから逃れてきた少女ロヤが、ぬいぐるみのウサギ「ミシュカ」に家族の過去を語りかける物語。新しい土地で暮らす家族の温かさと、難民として国を離れた苦しさの両方が、静かな筆致で描かれている。</p>
+          <div class="writability"><span class="dot mid"></span>社会的テーマが重く、自分の意見を持つ練習になる</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b13-1">① ミシュカが象徴するもの</button>
+          <button class="bookmark" data-target="b13-2">② 家族の温かさに注目する</button>
+        </div>
+        <div class="angle-detail" id="b13-1">
+          <h4>① ミシュカ(ぬいぐるみ)が象徴するものを考える</h4>
+          <p>ロヤはつらい経験を、直接語るのではなくミシュカに語りかける形で伝えます。大切な人やぬいぐるみに、言いにくい気持ちを話した経験があれば重ねて書けます。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、大切な物や人に、気持ちを話したことがあります。」</div>
+        </div>
+        <div class="angle-detail" id="b13-2">
+          <h4>② 新しい土地で暮らす家族の温かさに注目する</h4>
+          <p>つらい経験をしながらも、新しい土地でロヤの家族が支え合って暮らしていく温かさが描かれています。家族や身近な人に支えられた経験を思い出しながら、その温かさについて自分の言葉で書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「この本を読んで、わたしは家族や身近な人に支えられていることのありがたさを感じました。」</div>
+        </div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4251096436?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/610BtQgHGyL._SY300_.jpg" alt="キミの一歩アフリカ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge kadai">課題図書</span><span class="badge theme">SDGs・貧困</span></div>
+          <h3 class="book-title">キミの一歩アフリカ</h3>
+          <p class="book-synopsis">砂漠化による食糧不足や貧困、環境破壊といった厳しい状況の中でも、チェスやボクシングなど、大きな夢や目標に向かって一歩ずつ力強く生きるアフリカの子どもたちの姿を描いたノンフィクション。</p>
+          <div class="writability"><span class="dot"></span>社会課題+自分に出来ることへつなげやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b14-1">① 自分にできる「一歩」を考える</button>
+          <button class="bookmark" data-target="b14-2">② 夢を持ち続ける力強さ</button>
+        </div>
+        <div class="angle-detail" id="b14-1">
+          <h4>① 自分にできる「一歩」を考える</h4>
+          <p>タイトルの「一歩」にならって、遠い国の課題を知ったうえで、自分が明日からできる小さな行動を考えてみましょう。社会科の学びとも繋げやすいテーマです。</p>
+          <div class="starter"><b>書き出しの例：</b>「この本を読んで、わたしにもできることがあると気づきました。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+        <div class="angle-detail" id="b14-2">
+          <h4>② 厳しい状況でも夢を持ち続ける力強さ</h4>
+          <p>厳しい環境の中でも、チェスやボクシングなど大きな夢に向かって一歩ずつ進む子どもたちの姿が描かれています。自分が大変な状況でも諦めずに続けたことがあれば、その姿と重ねて書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、大変だったけれど諦めずに続けたことがあります。」</div>
+          <div class="pending-note">※本の詳しい場面は未読のため、実際に読んでから具体的な場面を追加予定</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-category-heading"><span class="line"></span><span class="label">定番作品(高学年)</span><span class="line"></span></div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4035507105?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/51HgA1+sQiL._SY300_.jpg" alt="ごんぎつね">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">後悔・すれ違い</span></div>
+          <h3 class="book-title">ごんぎつね</h3>
+          <p class="book-author">新美南吉</p>
+          <p class="book-synopsis">いたずら好きの子ぎつねごんが、ある出来事をきっかけに人間の兵十へつぐないを続けるが、その気持ちがすれ違ったまま悲しい結末を迎える、国語教科書の定番作品。</p>
+          <div class="writability"><span class="dot mid"></span>教科書の定番中の定番。すれ違いの切なさから深い感想を書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="b15-1">① 気持ちがすれ違う切なさ</button>
+          <button class="bookmark" data-target="b15-2">② ごんの立場・兵十の立場</button>
+        </div>
+        <div class="angle-detail" id="b15-1">
+          <h4>① 気持ちがすれ違う切なさに注目する</h4>
+          <p>ごんはつぐないの気持ちを伝えたかったのに、その思いは最後まで正しく伝わりません。「伝えたい気持ちが伝わらなかった」自分の経験と重ねると、深みのある感想が書けます。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、気持ちがうまく伝わらなかった経験があります。」</div>
+        </div>
+        <div class="angle-detail" id="b15-2">
+          <h4>② ごんの立場・兵十の立場、両方から考える</h4>
+          <p>高学年向けの一歩進んだ書き方として、ごんの気持ちだけでなく、兵十の気持ちも想像してみましょう。立場によって物語の見え方が変わることに触れると、意見に深みが出ます。</p>
+          <div class="starter"><b>書き出しの例：</b>「ごんの立場で読むと切ないですが、兵十の立場で考えると…」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4001141272?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/81Z4iyLJ-4L._SY300_.jpg" alt="モモ">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">時間・生き方</span></div>
+          <h3 class="book-title">モモ</h3>
+          <p class="book-author">ミヒャエル・エンデ</p>
+          <p class="book-synopsis">人々から「時間」を奪う灰色の男たちに立ち向かう、不思議な少女モモの物語。効率ばかりを求める大人たちの姿を通して、本当の豊かさとは何かを問いかける名作。</p>
+          <div class="writability"><span class="dot mid"></span>テーマが深く、高学年らしい意見が書ける</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w9-1">① 「時間」とは何か考える</button>
+          <button class="bookmark" data-target="w9-2">② 効率と豊かさ、どちらが大事か</button>
+        </div>
+        <div class="angle-detail" id="w9-1">
+          <h4>① 「時間」とは何か考える</h4>
+          <p>灰色の男たちに時間を奪われる大人たちの姿から、自分にとって「時間を大切にする」とはどういうことか考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「この本を読んで、わたしにとっての時間の大切さについて考えました。」</div>
+        </div>
+        <div class="angle-detail" id="w9-2">
+          <h4>② 効率と豊かさ、どちらが大事か</h4>
+          <p>忙しく効率を求める生き方と、モモのようにゆっくり人の話を聞く生き方、自分はどちらに共感するか意見を書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしは○○のような生き方に共感しました。なぜなら…」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4001140012?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/51rmYowCM8L._SY300_.jpg" alt="星の王子さま">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">大切なもの</span></div>
+          <h3 class="book-title">星の王子さま</h3>
+          <p class="book-author">サン=テグジュペリ</p>
+          <p class="book-synopsis">砂漠に不時着した「ぼく」が出会った、小さな星からやってきた王子さま。様々な星をめぐる旅の話を通して、「本当に大切なものは目に見えない」というメッセージが静かに描かれる。</p>
+          <div class="writability"><span class="dot mid"></span>世界的名作。抽象的なテーマなので高学年向き</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w10-1">① 「目に見えないもの」の大切さ</button>
+          <button class="bookmark" data-target="w10-2">② 王子さまが出会った大人たちについて考える</button>
+        </div>
+        <div class="angle-detail" id="w10-1">
+          <h4>① 「目に見えないもの」の大切さ</h4>
+          <p>王子さまが伝える「大切なものは目に見えない」ということばについて、自分の経験から具体的に考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにとって目に見えない大切なものは○○です。」</div>
+        </div>
+        <div class="angle-detail" id="w10-2">
+          <h4>② 王子さまが出会った大人たちについて考える</h4>
+          <p>王子さまが旅の途中で出会う様々な大人たちの生き方について、自分はどう感じたか書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「王子さまが出会った大人たちを読んで、わたしは○○だと思いました。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4566014118?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/91ia9OFIBjL._SY300_.jpg" alt="チョコレート工場の秘密">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">欲・ユーモア</span></div>
+          <h3 class="book-title">チョコレート工場の秘密</h3>
+          <p class="book-author">ロアルド・ダール</p>
+          <p class="book-synopsis">貧しい少年チャーリーが手に入れた黄金のチケットで、謎に包まれたウォンカのチョコレート工場を見学することに。欲張りな子どもたちが次々とトラブルに巻き込まれる、痛快なユーモア作品。</p>
+          <div class="writability"><span class="dot"></span>展開が面白く、それぞれの子どもの行動について意見を書きやすい</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w11-1">① 子どもたちの行動から学ぶこと</button>
+          <button class="bookmark" data-target="w11-2">② チャーリーが選ばれた理由</button>
+        </div>
+        <div class="angle-detail" id="w11-1">
+          <h4>① 子どもたちの行動から学ぶこと</h4>
+          <p>工場で次々とトラブルに巻き込まれる子どもたちの行動を振り返り、自分ならどうするか考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしなら、あの場面で○○すると思います。」</div>
+        </div>
+        <div class="angle-detail" id="w11-2">
+          <h4>② チャーリーが選ばれた理由</h4>
+          <p>欲張らず素直なチャーリーが最後に選ばれる理由について、自分の意見を書いてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「チャーリーが選ばれたのは○○だからだと思います。」</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-head">
+        <a class="book-cover-slot" href="https://www.amazon.co.jp/dp/4652071531?tag=henatyoko02-22" target="_blank" rel="nofollow sponsored noopener">
+          <img class="book-cover" src="https://m.media-amazon.com/images/I/51o90YQgt6L._SY300_.jpg" alt="兎の眼">
+        </a>
+        <div class="book-info">
+          <div class="badge-row"><span class="badge teiban">定番作品</span><span class="badge theme">差別・優しさ</span></div>
+          <h3 class="book-title">兎の眼</h3>
+          <p class="book-author">灰谷健次郎</p>
+          <p class="book-synopsis">新任教師の小谷先生が、ごみ処理場のそばで育ったクラスの少年・鉄三と向き合いながら、教育とは何か、優しさとは何かを見つめ直していく物語。読み応えのある高学年向けの名作。</p>
+          <div class="writability"><span class="dot mid"></span>社会的なテーマが深く、意見文としての感想文を書く練習になる</div>
+        </div>
+      </div>
+      <div class="angles">
+        <div class="angles-label">感想を広げる切り口(気になるものをタップ)</div>
+        <div class="bookmark-row">
+          <button class="bookmark" data-target="w12-1">① 小谷先生の変化に注目する</button>
+          <button class="bookmark" data-target="w12-2">② 決めつけていた自分に気づく</button>
+        </div>
+        <div class="angle-detail" id="w12-1">
+          <h4>① 小谷先生の変化に注目する</h4>
+          <p>初めは戸惑っていた小谷先生が、鉄三と向き合う中でどう変わっていったかに注目してみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「小谷先生の変化を読んで、わたしは○○だと思いました。」</div>
+        </div>
+        <div class="angle-detail" id="w12-2">
+          <h4>② 決めつけていた自分に気づく</h4>
+          <p>見た目や状況だけで人を判断してしまうことについて、自分の経験と結びつけて考えてみましょう。</p>
+          <div class="starter"><b>書き出しの例：</b>「わたしにも、決めつけてしまっていたことがあるかもしれません。」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    <b>本サイトについて。</b>2026年度(第72回)課題図書12冊+学年区分ごとに5冊ずつの定番作品(計15冊)で構成しています。課題図書側の「切り口」の一部はテーマ情報をもとにしたご提案で、実際に読んだ場面をもとにした内容へ順次更新していきます。定番作品は広く知られた内容をもとに書いています。ネタバレにならないよう、あらすじの続きではなく「感想の視点」だけを提示する方針です。
+  </div>
+
+  <div class="notice" style="margin-top:16px; font-size:11.5px; text-align:left;">
+    当サイトは、Amazon.co.jpを宣伝しリンクすることによって紹介料を獲得できるAmazonアソシエイト・プログラムの参加者です。
+  </div>
+
+  <footer>本のしおり — 読書感想文サポートサイト　|　<a href="privacy.html" style="color:var(--ink-soft);">プライバシーポリシー・免責事項</a></footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.grade-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.grade-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const grade = tab.getAttribute('data-grade');
+      document.querySelectorAll('.grade-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + grade).classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.bookmark').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      const detail = document.getElementById(targetId);
+      const isShown = detail.classList.contains('show');
+      const card = btn.closest('.book-card');
+      card.querySelectorAll('.angle-detail').forEach(d => d.classList.remove('show'));
+      card.querySelectorAll('.bookmark').forEach(b => b.classList.remove('selected'));
+      if (!isShown) {
+        detail.classList.add('show');
+        btn.classList.add('selected');
+      }
+    });
+  });
+</script>
+</body>
+</html>
