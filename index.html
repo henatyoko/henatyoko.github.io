@@ -507,6 +507,32 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     pointer-events:auto;
   }
   .back-to-top:hover{transform:translateY(-2px);}
+  .lang-toggle-btn{
+    position:fixed;
+    right:18px;
+    top:18px;
+    padding:8px 14px;
+    border-radius:999px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.02em;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    z-index:30;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .lang-toggle-btn:hover{border-color:var(--accent);transform:translateY(-1px);}
+  .lang-toggle-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  /* Hide Google Translate default chrome; we drive it via our own button */
+  body{top:0 !important;}
+  .goog-te-banner-frame.skiptranslate{display:none !important;}
+  .goog-te-gadget-icon{display:none !important;}
+  .goog-text-highlight{background:none !important;box-shadow:none !important;}
+  #google_translate_element{display:none !important;}
   .about-meta{
     font-family:'JetBrains Mono',monospace;
     font-size:12.5px;
@@ -539,6 +565,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQ39KMTN"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<button class="lang-toggle-btn notranslate" id="langToggleBtn" translate="no" aria-label="Switch language / 言語を切り替え">EN</button>
+<div id="google_translate_element"></div>
 <div class="wrap">
 
   <div class="hero">
@@ -995,6 +1023,44 @@ backToTopBtn.addEventListener('click', ()=>{
 renderStats();
 pickTonight();
 render();
+
+(function(){
+  function currentTranslateLang(){
+    var m = document.cookie.match(/googtrans=\/[a-zA-Z-]+\/([a-zA-Z-]+)/);
+    return m ? m[1] : null;
+  }
+  function clearGoogTransCookie(){
+    var host = location.hostname;
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + host + ';';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + host + ';';
+  }
+  function setGoogTransCookie(lang){
+    var host = location.hostname;
+    document.cookie = 'googtrans=/ja/' + lang + '; path=/;';
+    document.cookie = 'googtrans=/ja/' + lang + '; path=/; domain=' + host + ';';
+  }
+  var langBtn = document.getElementById('langToggleBtn');
+  langBtn.textContent = currentTranslateLang() === 'en' ? '日本語' : 'EN';
+  langBtn.addEventListener('click', function(){
+    if(currentTranslateLang() === 'en'){
+      clearGoogTransCookie();
+    } else {
+      setGoogTransCookie('en');
+    }
+    location.reload();
+  });
+})();
 </script>
+<script>
+function googleTranslateElementInit(){
+  new google.translate.TranslateElement({
+    pageLanguage: 'ja',
+    includedLanguages: 'en',
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
